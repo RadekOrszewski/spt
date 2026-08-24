@@ -99,6 +99,16 @@ button.primary:hover{background:var(--signal);border-color:var(--ink);color:var(
 button.ghost{border-color:var(--rule);color:var(--ink-2)}
 
 .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.capwrap{display:grid;grid-template-columns:minmax(300px,420px) minmax(0,1fr);gap:18px;margin-top:22px;align-items:start}
+.captable{display:grid;grid-template-columns:minmax(0,1fr) 96px 116px;background:var(--paper);border-radius:12px;overflow:hidden}
+.captable > span{padding:11px 14px;font-size:13.5px;border-top:1px solid var(--rule);display:flex;align-items:center}
+.captable > span:nth-child(-n+3){border-top:none}
+.captable .ch{font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-3);font-weight:600;padding-bottom:6px}
+.captable .num50,.captable .num85{justify-content:flex-end}
+.captable .num85{background:var(--signal-soft);font-weight:600}
+.captable .ch.num85{background:var(--signal);color:var(--ink)}
+.captable .v{font-size:16px;font-weight:600}
+@media (max-width:760px){ .capwrap{grid-template-columns:minmax(0,1fr)} }
 .stat{background:var(--paper);border-left:4px solid var(--signal);border-radius:0 12px 12px 0;padding:12px 16px;min-width:150px}
 .stat .v{display:block;font-size:26px;font-weight:600;line-height:1.2;letter-spacing:-0.02em}
 .stat .k{font-size:12px;font-weight:300;color:var(--ink-2);line-height:1.4}
@@ -139,6 +149,8 @@ tr.warn td{background:var(--signal-soft)}
   padding:3px 9px;border-radius:999px;border:1px solid}
 .tag.wait{color:var(--ink);border-color:var(--ink);background:var(--signal)}
 .tag.ready{color:var(--ink);border-color:var(--ink);background:#fff}
+.tag.unchecked{color:var(--ink-3);border-color:var(--ink-3);border-style:dashed;background:#fff}
+.pull.unchecked{border-style:dashed;border-color:var(--ink-3)}
 .tag.block{color:var(--signal);border-color:var(--ink);background:var(--ink)}
 
 .strip{display:flex;gap:3px;grid-column:1/-1;margin-top:9px}
@@ -292,14 +304,27 @@ S-23: 8, 5, 3</textarea>
         </select>
       </label>
     </div>
-    <div class="row" style="margin-top:22px;gap:12px">
-      <div class="stat"><span class="v mono" id="s-items">—</span><span class="k" data-i18n="s1.stat.items"></span></div>
-      <div class="stat"><span class="v mono" id="s-pts">—</span><span class="k" data-i18n="s1.stat.pts"></span></div>
-      <div class="stat"><span class="v mono" id="s-p85">—</span><span class="k" data-i18n="s1.stat.p85"></span></div>
-      <div class="stat"><span class="v mono" id="s-size">—</span><span class="k" data-i18n="s1.stat.size"></span></div>
-      <div class="stat"><span class="v mono" id="s-deps">—</span><span class="k" data-i18n="s1.stat.deps"></span></div>
+    <div class="capwrap">
+      <div class="captable" role="table">
+        <span class="ch" data-i18n="s1.cap.title"></span>
+        <span class="ch num50" data-i18n="s1.cap.typ"></span>
+        <span class="ch num85" data-i18n="s1.cap.safe"></span>
+        <span data-i18n="s1.cap.items"></span>
+        <span class="v mono num50" id="cap-i50">—</span>
+        <span class="v mono num85" id="cap-i85">—</span>
+        <span data-i18n="s1.cap.pts"></span>
+        <span class="v mono num50" id="cap-p50">—</span>
+        <span class="v mono num85" id="cap-p85">—</span>
+      </div>
+      <div class="row" style="gap:12px;align-content:start">
+        <div class="stat"><span class="v mono" id="s-size">—</span><span class="k" data-i18n="s1.stat.size"></span></div>
+        <div class="stat"><span class="v mono" id="s-deps">—</span><span class="k" data-i18n="s1.stat.deps"></span></div>
+        <div class="stat"><span class="v mono" id="s-checked">—</span><span class="k" data-i18n="s1.stat.checked"></span></div>
+      </div>
     </div>
+    <p class="note" style="margin-top:16px;font-size:13px" data-i18n="s1.cap.note"></p>
     <p class="note" style="margin-top:18px;font-size:13px" data-i18n="s1.note"></p>
+    <p class="note" style="margin-top:10px;font-size:13px" data-i18n="s1.note3"></p>
     <p class="note" style="margin-top:10px;font-size:13px" data-i18n="s1.note2"></p>
   </div>
 </section>
@@ -383,7 +408,7 @@ S-23: 8, 5, 3</textarea>
 <section>
   <div class="sechead">
     <h2><span class="num">4</span><span data-i18n="s4.title">Forecast</span></h2>
-    <span class="hint" id="run-hint"></span>
+    <span class="hint" id="run-hint" data-i18n="s4.hint"></span>
   </div>
   <div class="row" style="margin-bottom:18px">
     <button class="primary" id="btn-run" data-i18n="s4.run"></button>
@@ -391,7 +416,8 @@ S-23: 8, 5, 3</textarea>
   </div>
   <div class="board" id="board"></div>
   <div class="legend">
-    <span><i style="border-color:var(--ink-3);background:#fff"></i><span data-i18n="s4.lg.free"></span></span>
+    <span><i style="border-color:var(--ink);background:#fff"></i><span data-i18n="s4.lg.free"></span></span>
+    <span><i style="border-color:var(--ink-3);background:#fff;border-style:dashed"></i><span data-i18n="s4.lg.unchecked"></span></span>
     <span><i style="border-color:var(--ink);background:var(--signal)"></i><span data-i18n="s4.lg.wait"></span></span>
     <span><i style="border-color:var(--ink);background:#fff"></i><span data-i18n="s4.lg.ready"></span></span>
     <span><i style="border-color:var(--ink);background:var(--ink)"></i><span data-i18n="s4.lg.over"></span></span>
@@ -475,19 +501,24 @@ var STR = {
     "s1.completed": "Completed work",
     "s1.completed.em": "e.g. S-18: 3, 5, 2, 8 — four items totalling 18 points",
     "s1.sprintlen": "Sprint length", "s1.sprintlen.em": "working days",
-    "s1.late": "Late dependency discovery", "s1.late.em": "% of items",
+    "s1.late": "Late dependency discovery", "s1.late.em": "% of unchecked items",
     "s1.horizon": "Sprints to forecast",
     "s1.runs": "Simulation runs",
     "s1.basis": "Capacity ceiling", "s1.basis.em": "what limits a sprint",
     "s1.basis.both": "Points and item count", "s1.basis.points": "Points only", "s1.basis.items": "Item count only",
     "s1.backfill": "Priority vs filling the sprint", "s1.backfill.em": "when the next item is too big for what's left",
     "s1.backfill.yes": "Fill the gap with a smaller item", "s1.backfill.no": "Keep strict priority, leave the gap",
+    "s1.note3": "The discovery rate applies only to items nobody has checked. An item marked <em>checked — no dependency</em> carries no hidden risk, so every hour the team spends mapping dependencies moves points out of the risky pile and shrinks the reserve. That is the lever this tool exists to show. If your assessments have been wrong before, leave those items unchecked rather than pretending otherwise.",
     "s1.note2": "That second setting matters more than it looks. Filling the gap is what most teams actually do, and it matches the history you pasted above. Keeping strict priority means one large item at the top of the backlog blocks everything behind it — which forecasts a team slower than yours has ever been.",
-    "s1.stat.items": "Items / sprint · P50",
-    "s1.stat.pts": "Points / sprint · P50",
-    "s1.stat.p85": "Points / sprint at 85% confidence",
+    "s1.cap.title": "Sprint capacity",
+    "s1.cap.typ": "Typical (P50)",
+    "s1.cap.safe": "85% confidence",
+    "s1.cap.items": "Items completed",
+    "s1.cap.pts": "Points completed",
+    "s1.cap.note": "Read the right-hand column as a floor, not a ceiling: 85% of your recorded sprints delivered at least that much. It is the 15th percentile of the distribution — the opposite end from a team's P85 response time, where 85% of waits come back <em>under</em> the number. Both are the pessimistic answer, because throughput hurts you when it is low and a wait hurts you when it is high. The plan below uses this column, at whatever confidence you set there.",
     "s1.stat.size": "Median item size",
     "s1.stat.deps": "Items waiting on another team",
+    "s1.stat.checked": "Backlog checked for dependencies",
     "s1.note": "Each simulated sprint replays a real one drawn at random from this history — by default its item count <em>and</em> its point total both act as a ceiling, so a sprint of six small items and a sprint of three big ones stay distinct possibilities. If your team is limited by one and not the other, say so above.",
 
     "s2.title": "Teams you depend on",
@@ -504,7 +535,8 @@ var STR = {
     "s3.th.key": "Jira key", "s3.th.summary": "Summary", "s3.th.points": "Points",
     "s3.th.team": "Depends on team", "s3.th.state": "Dependency state",
     "s3.ph.key": "ABC-123", "s3.ph.summary": "Short summary", "s3.ph.team": "Security",
-    "s3.state.none": "No known dependency", "s3.state.waiting": "Waiting on them", "s3.state.ready": "Already satisfied",
+    "s3.state.unassessed": "Not checked yet", "s3.state.clear": "Checked — no dependency",
+    "s3.state.waiting": "Waiting on them", "s3.state.ready": "Already satisfied",
     "s3.team.none": "— none —",
     "s3.empty": "No items yet. Add one, load the demo backlog, or import a spreadsheet.",
     "s3.add": "Add item", "s3.demo": "Load demo backlog", "s3.clear": "Clear all",
@@ -528,7 +560,9 @@ var STR = {
     "s4.depready": "ok",
     "s4.unassigned": "unassigned",
     "s4.tip": "{p} by end of sprint {n}",
-    "s4.lg.free": "no known dependency", "s4.lg.wait": "waiting on another team",
+    "s4.lg.free": "checked — no dependency", "s4.unchecked": "not checked",
+    "s4.lg.unchecked": "not checked yet — carries discovery risk",
+    "s4.lg.wait": "waiting on another team",
     "s4.lg.ready": "dependency already satisfied", "s4.lg.over": "P85 wait exceeds one sprint",
     "s4.lg.mark": "P85 capacity mark on the meter",
     "s4.note": "The three cells under each item are its cumulative probability of being finished by the end of sprints 1, 2 and 3. A column's header confidence is the share of simulation runs in which <strong>everything planned up to and including that sprint</strong> had actually finished by the end of it. It is always far lower than any single item's number — that gap is the reason sprint commitments miss, and it is the figure worth quoting to a stakeholder.",
@@ -548,9 +582,11 @@ var STR = {
     "s5.stat.cap": "{pts} pts", "s5.stat.cap.k": "per sprint at {p} confidence",
     "s5.colsub": "starts {date} · {a} of {b} free to start",
     "s5.lane.safe": "Safe to start",
+    "s5.lane.unchecked": "Start, but check for dependencies first",
+    "s5.stat.unchecked": "{n} {w}", "s5.stat.unchecked.k": "not checked for dependencies",
     "s5.lane.held": "Only if the answer is back",
     "s5.lane.raise": "Raise with other teams",
-    "s5.nofree": "Nothing here is dependency-free.",
+    "s5.nofree": "Nothing here is confirmed dependency-free.",
     "s5.noreq": "No requests due.",
     "s5.today": "raise today", "s5.by.date2": "raise by {date}",
     "s5.turn": "{d}d turnaround · unblocks sprint {n}",
@@ -615,19 +651,24 @@ var STR = {
     "s1.completed": "Ukończona praca",
     "s1.completed.em": "np. S-18: 3, 5, 2, 8 — cztery elementy, łącznie 18 punktów",
     "s1.sprintlen": "Długość sprintu", "s1.sprintlen.em": "dni robocze",
-    "s1.late": "Późne wykrycie zależności", "s1.late.em": "% elementów",
+    "s1.late": "Późne wykrycie zależności", "s1.late.em": "% niesprawdzonych elementów",
     "s1.horizon": "Liczba sprintów w prognozie",
     "s1.runs": "Liczba przebiegów symulacji",
     "s1.basis": "Ograniczenie przepustowości", "s1.basis.em": "co limituje sprint",
     "s1.basis.both": "Punkty i liczba elementów", "s1.basis.points": "Tylko punkty", "s1.basis.items": "Tylko liczba elementów",
     "s1.backfill": "Priorytet a wypełnienie sprintu", "s1.backfill.em": "gdy kolejny element nie mieści się w tym, co zostało",
     "s1.backfill.yes": "Uzupełnij lukę mniejszym elementem", "s1.backfill.no": "Trzymaj ścisły priorytet, zostaw lukę",
+    "s1.note3": "Odsetek późnych wykryć dotyczy wyłącznie elementów, których nikt nie sprawdził. Element oznaczony jako <em>sprawdzone — brak zależności</em> nie niesie ukrytego ryzyka, więc każda godzina poświęcona na mapowanie zależności przenosi punkty poza ryzykowną pulę i zmniejsza rezerwę. To właśnie ta dźwignia jest sensem tego narzędzia. Jeśli wasze oceny bywały błędne, zostawcie takie elementy jako niesprawdzone, zamiast udawać inaczej.",
     "s1.note2": "To drugie ustawienie znaczy więcej, niż się wydaje. Uzupełnianie luki to zachowanie większości zespołów i zgadza się z historią wklejoną powyżej. Ścisły priorytet oznacza, że jeden duży element na górze backlogu blokuje wszystko za sobą — a to daje prognozę wolniejszą, niż wasz zespół kiedykolwiek był.",
-    "s1.stat.items": "Elementy / sprint · P50",
-    "s1.stat.pts": "Punkty / sprint · P50",
-    "s1.stat.p85": "Punkty / sprint przy 85% pewności",
+    "s1.cap.title": "Przepustowość sprintu",
+    "s1.cap.typ": "Typowa (P50)",
+    "s1.cap.safe": "Przy 85% pewności",
+    "s1.cap.items": "Ukończone elementy",
+    "s1.cap.pts": "Ukończone punkty",
+    "s1.cap.note": "Prawą kolumnę czytaj jako podłogę, nie sufit: 85% waszych zapisanych sprintów dostarczyło co najmniej tyle. To 15. percentyl rozkładu — przeciwny koniec niż P85 czasu odpowiedzi zespołu, gdzie 85% oczekiwań wraca <em>poniżej</em> podanej liczby. Obie wartości są pesymistyczne, bo przepustowość szkodzi, gdy jest niska, a oczekiwanie — gdy jest wysokie. Plan poniżej korzysta z tej kolumny, przy ustawionym tam poziomie pewności.",
     "s1.stat.size": "Mediana rozmiaru elementu",
     "s1.stat.deps": "Elementy czekające na inny zespół",
+    "s1.stat.checked": "Backlog sprawdzony pod kątem zależności",
     "s1.note": "Każdy symulowany sprint odtwarza prawdziwy sprint wylosowany z tej historii — domyślnie zarówno liczba elementów, <em>jak i</em> suma punktów działają jako limit, więc sprint z sześcioma małymi elementami i sprint z trzema dużymi pozostają osobnymi możliwościami. Jeśli zespół ogranicza tylko jedno z nich, zaznacz to powyżej.",
 
     "s2.title": "Zespoły, od których zależycie",
@@ -644,7 +685,8 @@ var STR = {
     "s3.th.key": "Klucz Jira", "s3.th.summary": "Opis", "s3.th.points": "Punkty",
     "s3.th.team": "Zależy od zespołu", "s3.th.state": "Stan zależności",
     "s3.ph.key": "ABC-123", "s3.ph.summary": "Krótki opis", "s3.ph.team": "Bezpieczeństwo",
-    "s3.state.none": "Brak znanej zależności", "s3.state.waiting": "Czekamy na nich", "s3.state.ready": "Już rozwiązana",
+    "s3.state.unassessed": "Jeszcze niesprawdzone", "s3.state.clear": "Sprawdzone — brak zależności",
+    "s3.state.waiting": "Czekamy na nich", "s3.state.ready": "Już rozwiązana",
     "s3.team.none": "— brak —",
     "s3.empty": "Brak elementów. Dodaj element, wczytaj przykładowy backlog albo zaimportuj arkusz.",
     "s3.add": "Dodaj element", "s3.demo": "Wczytaj przykładowy backlog", "s3.clear": "Wyczyść wszystko",
@@ -668,7 +710,9 @@ var STR = {
     "s4.depready": "ok",
     "s4.unassigned": "bez zespołu",
     "s4.tip": "{p} do końca sprintu {n}",
-    "s4.lg.free": "brak znanej zależności", "s4.lg.wait": "czeka na inny zespół",
+    "s4.lg.free": "sprawdzone — brak zależności", "s4.unchecked": "niesprawdzone",
+    "s4.lg.unchecked": "jeszcze niesprawdzone — niesie ryzyko wykrycia",
+    "s4.lg.wait": "czeka na inny zespół",
     "s4.lg.ready": "zależność już rozwiązana", "s4.lg.over": "P85 przekracza jeden sprint",
     "s4.lg.mark": "znacznik przepustowości P85 na pasku",
     "s4.note": "Trzy pola pod każdym elementem to skumulowane prawdopodobieństwo ukończenia go do końca sprintu 1, 2 i 3. Pewność w nagłówku kolumny to odsetek przebiegów symulacji, w których <strong>wszystko zaplanowane do tego sprintu włącznie</strong> faktycznie zostało ukończone. Zawsze jest znacznie niższa niż liczba dla pojedynczego elementu — ta różnica jest powodem, dla którego zobowiązania sprintowe nie wychodzą, i to ją warto podawać interesariuszom.",
@@ -688,9 +732,11 @@ var STR = {
     "s5.stat.cap": "{pts} pkt", "s5.stat.cap.k": "na sprint przy {p} pewności",
     "s5.colsub": "start {date} · {a} z {b} gotowych do rozpoczęcia",
     "s5.lane.safe": "Bezpieczne do rozpoczęcia",
+    "s5.lane.unchecked": "Start, ale najpierw sprawdź zależności",
+    "s5.stat.unchecked": "{n} {w}", "s5.stat.unchecked.k": "niesprawdzonych pod kątem zależności",
     "s5.lane.held": "Tylko jeśli odpowiedź wróci",
     "s5.lane.raise": "Zgłoś innym zespołom",
-    "s5.nofree": "Nic tutaj nie jest wolne od zależności.",
+    "s5.nofree": "Nic tutaj nie ma potwierdzonego braku zależności.",
     "s5.noreq": "Brak zgłoszeń na ten sprint.",
     "s5.today": "zgłoś dziś", "s5.by.date2": "zgłoś do {date}",
     "s5.turn": "czas odpowiedzi {d} dni · odblokowuje sprint {n}",
@@ -939,7 +985,7 @@ function oneRun(p, weights, maxS){
         if (items[i].state === "waiting"){
           ti = teamIndex(items[i].team);
           if (ti < 0 && teams.length) ti = pickTeam(weights);
-        } else if (items[i].state === "none" && teams.length && Math.random() < p.pLate){
+        } else if (items[i].state === "unassessed" && teams.length && Math.random() < p.pLate){
           ti = pickTeam(weights);              /* the dependency nobody had labelled */
         }
         if (ti >= 0){
@@ -979,7 +1025,7 @@ function runSim(p){
     if (r < 4000) runs.push(res.done);
     for (var j = 0; j < n; j++){
       if (res.done[j] >= 0) counts[j][res.done[j]]++;
-      if (items[j].state === "none" && res.blamed[j] >= 0) surprises[res.blamed[j]] += (+items[j].points || 0);
+      if (carriesRisk(items[j]) && res.blamed[j] >= 0) surprises[res.blamed[j]] += (+items[j].points || 0);
     }
   }
 
@@ -1134,7 +1180,7 @@ function buildPlan(){
 
   items.forEach(function(it, idx){
     var ws = work[idx];
-    var entry = { i: idx, team: "", wait: wait[idx], raiseBy: null, sprint: ws, urgent: false };
+    var entry = { i: idx, team: "", state: it.state, wait: wait[idx], raiseBy: null, sprint: ws, urgent: false };
     if (it.state === "waiting"){
       entry.team = it.team || "unassigned";
       entry.raiseBy = workingAdd(sprintStart(ws), -Math.ceil(wait[idx]));
@@ -1199,7 +1245,7 @@ $("teambody").addEventListener("click", function(e){
   if (d === null) return;
   var name = teams[+d].name;
   teams.splice(+d, 1);
-  items.forEach(function(it){ if (it.team === name){ it.team = ""; it.state = "none"; } });
+  items.forEach(function(it){ if (it.team === name){ it.team = ""; it.state = "unassessed"; } });
   renderTeams(); renderTable(); runForecast();
 });
 $("btn-addteam").addEventListener("click", function(){
@@ -1211,7 +1257,18 @@ $("btn-addteam").addEventListener("click", function(){
 
 /* ---------- backlog table ---------- */
 
-function blankItem(){ return { key:"", summary:"", points:3, team:"", state:"none" }; }
+function blankItem(){ return { key:"", summary:"", points:3, team:"", state:"unassessed" }; }
+
+/* four states: unassessed (nobody looked), clear (looked, nothing there),
+   waiting (known dependency outstanding), ready (known dependency satisfied).
+   "none" from older files meant "no KNOWN dependency", i.e. unassessed. */
+function normState(v){
+  var s = String(v == null ? "" : v).toLowerCase().trim();
+  if (s === "waiting" || s === "ready" || s === "clear" || s === "unassessed") return s;
+  if (s === "checked" || s === "independent" || s === "nodependency" || s === "no dependency") return "clear";
+  return "unassessed";
+}
+function carriesRisk(it){ return it.state === "unassessed"; }
 
 function teamOptions(sel){
   var html = '<option value=""' + (!sel ? " selected" : "") + '>' + esc(t("s3.team.none")) + '</option>';
@@ -1238,7 +1295,8 @@ function renderTable(){
       '<td><input type="number" data-f="points" data-i="' + i + '" value="' + (+it.points || 0) + '" min="0" step="0.5"></td>' +
       '<td><select data-f="team" data-i="' + i + '">' + teamOptions(it.team) + '</select></td>' +
       '<td><select data-f="state" data-i="' + i + '">' +
-        '<option value="none"' + (it.state === "none" ? " selected" : "") + '>' + esc(t("s3.state.none")) + '</option>' +
+        '<option value="unassessed"' + (it.state === "unassessed" ? " selected" : "") + '>' + esc(t("s3.state.unassessed")) + '</option>' +
+        '<option value="clear"' + (it.state === "clear" ? " selected" : "") + '>' + esc(t("s3.state.clear")) + '</option>' +
         '<option value="waiting"' + (it.state === "waiting" ? " selected" : "") + '>' + esc(t("s3.state.waiting")) + '</option>' +
         '<option value="ready"' + (it.state === "ready" ? " selected" : "") + '>' + esc(t("s3.state.ready")) + '</option>' +
       '</select></td>' +
@@ -1257,8 +1315,11 @@ $("tbody").addEventListener("change", function(e){
   var el = e.target, i = el.getAttribute("data-i"), f = el.getAttribute("data-f");
   if (i === null || !f) return;
   items[+i][f] = el.value;
-  if (f === "team" && el.value && items[+i].state === "none") items[+i].state = "waiting";
-  if (f === "state" && el.value !== "none" && !items[+i].team && teams.length) items[+i].team = teams[0].name;
+  if (f === "team" && el.value && (items[+i].state === "unassessed" || items[+i].state === "clear")) items[+i].state = "waiting";
+  if (f === "state"){
+    if ((el.value === "waiting" || el.value === "ready") && !items[+i].team && teams.length) items[+i].team = teams[0].name;
+    if (el.value === "unassessed" || el.value === "clear") items[+i].team = "";
+  }
   renderTable(); renderTeams(); runForecast();
 });
 $("tbody").addEventListener("click", function(e){
@@ -1274,11 +1335,13 @@ function updateStats(){
   var pts = p.history.map(function(s){ return s.points; });
   var sizes = [];
   p.history.forEach(function(s){ sizes = sizes.concat(s.sizes); });
-  $("s-items").textContent = fmtN(r1(percentile(counts, 0.5)));
-  $("s-pts").textContent = fmtN(r1(percentile(pts, 0.5)));
-  $("s-p85").textContent = fmtN(r1(percentile(pts, 0.15)));
+  $("cap-i50").textContent = fmtN(r1(percentile(counts, 0.5)));
+  $("cap-i85").textContent = fmtN(Math.floor(percentile(counts, 0.15)));
+  $("cap-p50").textContent = fmtN(r1(percentile(pts, 0.5)));
+  $("cap-p85").textContent = fmtN(r1(percentile(pts, 0.15)));
   $("s-size").textContent = fmtN(r1(percentile(sizes, 0.5)));
   $("s-deps").textContent = items.filter(function(i){ return i.state === "waiting"; }).length + " / " + items.length;
+  $("s-checked").textContent = items.filter(function(i){ return !carriesRisk(i); }).length + " / " + items.length;
 }
 
 /* ---------- board ---------- */
@@ -1298,7 +1361,7 @@ function renderBoard(f, p){
   for (var s = 0; s < p.horizon; s++){
     var col = f.cols[s];
     var pts = col.reduce(function(a, i){ return a + (+items[i].points || 0); }, 0);
-    var unlabelled = col.filter(function(i){ return items[i].state === "none"; })
+    var unlabelled = col.filter(function(i){ return carriesRisk(items[i]); })
                         .reduce(function(a, i){ return a + (+items[i].points || 0); }, 0);
     var reserve = unlabelled * p.pLate * (eWait / p.sprintLen);
 
@@ -1349,6 +1412,8 @@ function itemHtml(i, f, p){
     badge = '<span class="tag ' + (over ? "block" : "wait") + '">' + esc(it.team || t("s4.unassigned")) + '</span>';
   } else if (it.state === "ready"){
     badge = '<span class="tag ready">' + esc(it.team || "dep") + ' ' + t("s4.depready") + '</span>';
+  } else if (it.state === "unassessed"){
+    badge = '<span class="tag unchecked">' + t("s4.unchecked") + '</span>';
   }
   var strip = '<div class="strip">';
   for (var s = 0; s < Math.min(3, p.horizon); s++){
@@ -1431,19 +1496,23 @@ function renderPlan(){
     return a + c.raise.filter(function(e){ return e.urgent; }).length; }, 0);
   var inScope = pn.cols.reduce(function(a, c){ return a + c.pull.length; }, 0);
   var depMissed = pn.missed.filter(function(e){ return e.reason === "dependency"; }).length;
+  var unchecked = pn.cols.reduce(function(a, c){
+    return a + c.pull.filter(function(e){ return e.state === "unassessed"; }).length; }, 0);
   var confPct = Math.round(pn.conf * 100) + "%";
 
   sum.innerHTML =
     stat(t("s5.stat.scope", { a: inScope, b: items.length }), t("s5.stat.scope.k")) +
     stat(t("s5.stat.req", { n: totalRaise, w: nw(totalRaise, "f.request") }), t("s5.stat.req.k", { n: urgent, w: nw(urgent, "f.must") })) +
     stat(t("s5.stat.miss", { n: pn.missed.length, w: nw(pn.missed.length, "f.item") }), t("s5.stat.miss.k", { n: depMissed, w: nw(depMissed, "f.blocked") })) +
-    stat(t("s5.stat.cap", { pts: fmtN(r1(pn.capPts)) }), t("s5.stat.cap.k", { p: confPct }));
+    stat(t("s5.stat.cap", { pts: fmtN(r1(pn.capPts)) }), t("s5.stat.cap.k", { p: confPct })) +
+    stat(t("s5.stat.unchecked", { n: unchecked, w: nw(unchecked, "f.item") }), t("s5.stat.unchecked.k"));
 
   $("plan-hint").textContent = t("s5.hint", { date: fmtDate(workingAdd(pn.targetDate, -1)), p: confPct });
 
   var html = "";
   pn.cols.forEach(function(c){
-    var freeItems = c.pull.filter(function(e){ return !e.team; });
+    var freeItems = c.pull.filter(function(e){ return !e.team && e.state !== "unassessed"; });
+    var uncheckedItems = c.pull.filter(function(e){ return !e.team && e.state === "unassessed"; });
     var heldItems = c.pull.filter(function(e){ return e.team; });
     html += '<div class="col" style="--conf:' + (c.pull.length ? Math.round(freeItems.length / c.pull.length * 100) : 0) + '%">' +
       '<h3>' + t("sprintN", { n: c.sprint }) + '</h3>' +
@@ -1456,6 +1525,14 @@ function renderPlan(){
       html += '<div class="pull"><span class="k">' + esc(it.key || t("nokey")) + '</span>' +
         '<span class="pts">' + (+it.points || 0) + ' ' + t("pt") + '</span></div>';
     });
+    if (uncheckedItems.length){
+      html += '<h4 style="margin-top:14px">' + t("s5.lane.unchecked") + '</h4>';
+      uncheckedItems.forEach(function(e){
+        var it = items[e.i];
+        html += '<div class="pull unchecked"><span class="k">' + esc(it.key || t("nokey")) + '</span>' +
+          '<span class="pts">' + (+it.points || 0) + ' ' + t("pt") + '</span></div>';
+      });
+    }
     if (heldItems.length){
       html += '<h4 style="margin-top:14px">' + t("s5.lane.held") + '</h4>';
       heldItems.forEach(function(e){
@@ -1579,15 +1656,17 @@ function mapRow(row, headers){
     else if (n === "labels" || n === "label" || n === "tags") labels = String(v).toLowerCase();
     else if (n === "state" || n === "dependencystate" || n === "depstate" || n === "status"){
       var sv = String(v).toLowerCase().trim();
-      if (sv === "none" || sv === "waiting" || sv === "ready") it.state = sv;
+      if (sv) it.state = normState(sv);
     }
   });
-  if (it.state === "none"){
+  if (it.state === "unassessed"){
     if (labels.indexOf("ready") >= 0 || labels.indexOf("resolved") >= 0) it.state = "ready";
     else if (labels.indexOf("dep") >= 0 || labels.indexOf("blocked") >= 0) it.state = "waiting";
+    else if (labels.indexOf("nodep") >= 0 || labels.indexOf("independent") >= 0 ||
+             labels.indexOf("checked") >= 0) it.state = "clear";
   }
-  if (it.state === "none" && it.team) it.state = "waiting";
-  if (it.state !== "none"){
+  if (it.state === "unassessed" && it.team) it.state = "waiting";
+  if (it.state === "waiting" || it.state === "ready"){
     if (!it.team) it.team = "Unassigned";
     ensureTeam(it.team, null);
     it.team = teams[teamIndex(it.team)].name;
@@ -1674,9 +1753,9 @@ drop.addEventListener("drop", function(e){
 $("btn-tmpl").addEventListener("click", function(){
   var backlog = [ t("tmpl.hdr") ].concat([
     ["PAY-104","Card tokenisation swap",5,"Security","dependency","waiting"],
-    ["AUTH-12","Session expiry banner",3,"","",""],
+    ["AUTH-12","Session expiry banner",3,"","","clear"],
     ["BIL-3","Invoice PDF rewrite",8,"UX","blocked-by","waiting"],
-    ["REP-7","Weekly usage report",5,"","",""]
+    ["REP-7","Weekly usage report",5,"","","unassessed"]
   ]);
   var hist = [["S-20",2,3,5,5,3,2],["S-21",5,5,8,3],["S-22",3,2,3,5,5,3],["S-23",8,5,3]];
   var wb = XLSX.utils.book_new();
@@ -1729,7 +1808,9 @@ $("jsonfile").addEventListener("change", function(e){
         return { name: tm.name || "", p85: +tm.p85 || 0 };
       });
       if (Array.isArray(d.items)) items = d.items.map(function(i){
-        return { key:i.key||"", summary:i.summary||"", points:+i.points||0, team:i.team||"", state:i.state||"none" };
+        var st = normState(i.state);
+        return { key:i.key||"", summary:i.summary||"", points:+i.points||0,
+                 team: (st === "waiting" || st === "ready") ? (i.team || "") : "", state: st };
       });
       renderTeams(); renderTable(); runForecast();
       $("import-msg").innerHTML = '<div class="msg">' + t("msg.restored") + '</div>';
@@ -1792,21 +1873,21 @@ for (var lb = 0; lb < langButtons.length; lb++){
 var demoTeams = { en: ["Security","UX","Platform","Data"], pl: ["Bezpieczeństwo","UX","Platforma","Dane"] };
 var demoP85 = [14, 6, 9, 18];
 var demoItems = [
-  ["AUTH-12", 3, -1, "none",    "Session expiry banner",     "Baner wygaśnięcia sesji"],
-  ["PAY-104", 5,  0, "waiting", "Card tokenisation swap",    "Wymiana tokenizacji kart"],
-  ["REP-7",   5, -1, "none",    "Weekly usage report",       "Tygodniowy raport użycia"],
-  ["BIL-3",   8,  1, "waiting", "Invoice PDF rewrite",       "Przebudowa faktur PDF"],
-  ["NOT-9",   2, -1, "none",    "Digest email opt-out",      "Rezygnacja z podsumowań"],
-  ["SEA-2",   8,  1, "waiting", "Faceted search filters",    "Filtry wyszukiwania"],
-  ["PLAT-31", 5,  2, "ready",   "Vault client upgrade",      "Aktualizacja klienta Vault"],
-  ["PAY-110", 5, -1, "none",    "Refund reconciliation",     "Uzgadnianie zwrotów"],
-  ["ADM-4",   3, -1, "none",    "Bulk user import",          "Masowy import użytkowników"],
-  ["ADM-5",   3,  0, "waiting", "Role audit log",            "Dziennik audytu ról"],
-  ["MOB-1",   8, -1, "none",    "Offline draft sync",        "Synchronizacja szkiców offline"],
-  ["MOB-2",   5,  2, "waiting", "Push token rotation",       "Rotacja tokenów push"],
-  ["DAT-8",   8,  3, "waiting", "Event schema v2",           "Schemat zdarzeń v2"],
-  ["FIN-9",   5, -1, "none",    "Tax rules table",           "Tabela reguł podatkowych"],
-  ["SEA-5",   5,  3, "waiting", "Search relevance tuning",   "Strojenie trafności wyszukiwania"]
+  ["AUTH-12", 3, -1, "clear",      "Session expiry banner",     "Baner wygaśnięcia sesji"],
+  ["PAY-104", 5,  0, "waiting",    "Card tokenisation swap",    "Wymiana tokenizacji kart"],
+  ["REP-7",   5, -1, "clear",      "Weekly usage report",       "Tygodniowy raport użycia"],
+  ["BIL-3",   8,  1, "waiting",    "Invoice PDF rewrite",       "Przebudowa faktur PDF"],
+  ["NOT-9",   2, -1, "clear",      "Digest email opt-out",      "Rezygnacja z podsumowań"],
+  ["SEA-2",   8,  1, "waiting",    "Faceted search filters",    "Filtry wyszukiwania"],
+  ["PLAT-31", 5,  2, "ready",      "Vault client upgrade",      "Aktualizacja klienta Vault"],
+  ["PAY-110", 5, -1, "unassessed", "Refund reconciliation",     "Uzgadnianie zwrotów"],
+  ["ADM-4",   3, -1, "clear",      "Bulk user import",          "Masowy import użytkowników"],
+  ["ADM-5",   3,  0, "waiting",    "Role audit log",            "Dziennik audytu ról"],
+  ["MOB-1",   8, -1, "unassessed", "Offline draft sync",        "Synchronizacja szkiców offline"],
+  ["MOB-2",   5,  2, "waiting",    "Push token rotation",       "Rotacja tokenów push"],
+  ["DAT-8",   8,  3, "waiting",    "Event schema v2",           "Schemat zdarzeń v2"],
+  ["FIN-9",   5, -1, "unassessed", "Tax rules table",           "Tabela reguł podatkowych"],
+  ["SEA-5",   5,  3, "waiting",    "Search relevance tuning",   "Strojenie trafności wyszukiwania"]
 ];
 function loadDemo(){
   var names = demoTeams[LANG] || demoTeams.en;
