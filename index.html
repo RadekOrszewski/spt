@@ -148,20 +148,6 @@ tr.warn td{background:var(--signal-soft)}
 .strip span u{position:absolute;inset:0;font-size:10px;font-weight:600;text-decoration:none;
   display:flex;align-items:center;justify-content:center;color:var(--ink)}
 
-.lane{margin-top:16px}
-.lane h4{font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin:0 0 9px}
-.req{background:var(--signal);border:1px solid var(--ink);border-radius:10px;padding:9px 11px;margin-bottom:8px}
-.req .k{display:block;font-size:13px;font-weight:600;line-height:1.35}
-.req .d{display:block;font-size:11.5px;font-weight:400;color:var(--ink)}
-.pull{background:#fff;border:1px solid var(--ink-3);border-radius:10px;padding:9px 11px;margin-bottom:8px;
-  display:flex;justify-content:space-between;align-items:center;gap:8px}
-.pull .k{font-size:13px;font-weight:600}
-.bucket{background:var(--ink);color:#fff;border-radius:16px;padding:20px 24px;margin-top:16px}
-.bucket h3{color:var(--signal);margin-bottom:6px}
-.bucket .row-i{display:flex;justify-content:space-between;gap:14px;padding:8px 0;border-top:1px solid rgba(255,255,255,.18);font-size:13px}
-.bucket .row-i:first-of-type{border-top:none}
-.bucket .why{color:var(--signal);font-weight:500}
-.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:20px}
 .reserve{border:1px dashed var(--ink);border-radius:12px;padding:11px 13px;margin-top:14px;background:var(--signal-soft);
   font-size:12px;font-weight:300;color:var(--ink-2);line-height:1.5}
 .reserve strong{font-weight:600;color:var(--ink)}
@@ -195,34 +181,48 @@ details[open] summary::before{content:"– "}
 @media (prefers-reduced-motion:no-preference){
   .meter i,.strip span i{transition:width .3s cubic-bezier(.4,0,.2,1),height .3s cubic-bezier(.4,0,.2,1)}
 }
+
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:20px}
+.brand{margin-bottom:0}
+.langswitch{display:inline-flex;border:1px solid var(--ink);border-radius:999px;overflow:hidden}
+.langswitch button{border:none;border-radius:0;padding:5px 14px;font-size:12px;font-weight:600;letter-spacing:.06em;background:#fff;color:var(--ink)}
+.langswitch button + button{border-left:1px solid var(--ink)}
+.langswitch button:hover{background:var(--signal-soft)}
+.langswitch button[aria-pressed="true"]{background:var(--signal);color:var(--ink)}
 </style>
 </head>
 <body>
 <div class="wrap">
 
 <header>
-  <div class="brand">
-    <svg class="shuriken" viewBox="0 0 24 24" aria-hidden="true">
-      <path fill="currentColor" d="M12 1.4l2.6 7.99L22.6 12l-8 2.61L12 22.6l-2.6-8.0L1.4 12l8-2.61z"/>
-      <circle cx="12" cy="12" r="2.1" fill="var(--ink)"/>
-    </svg>
-    <span>Lean Agile Ninja</span>
+  <div class="topbar">
+    <div class="brand">
+      <svg class="shuriken" viewBox="0 0 24 24" aria-hidden="true">
+        <path fill="currentColor" d="M12 1.4l2.6 7.99L22.6 12l-8 2.61L12 22.6l-2.6-8.0L1.4 12l8-2.61z"/>
+        <circle cx="12" cy="12" r="2.1" fill="var(--ink)"/>
+      </svg>
+      <span data-i18n="brand">Lean Agile Ninja</span>
+    </div>
+    <div class="langswitch" role="group" aria-label="Language">
+      <button type="button" data-lang="en" aria-pressed="true">EN</button>
+      <button type="button" data-lang="pl" aria-pressed="false">PL</button>
+    </div>
   </div>
-  <p class="eyebrow">Flow forecasting</p>
-  <h1>Cross-team dependency forecast</h1>
+  <p class="eyebrow" data-i18n="hdr.eyebrow">Flow forecasting</p>
+  <h1 data-i18n="hdr.title">Cross-team dependency forecast</h1>
   <div class="rule"></div>
-  <p class="sub">Feed it what your team actually finished each sprint and a backlog labelled with the teams you depend on. It simulates the next few sprints against your measured discovery rate and each team's 85th-percentile response time, then shows where the work is likely to land — and how much capacity to hold back for the dependencies nobody has spotted yet.</p>
+  <p class="sub" data-i18n="hdr.sub"></p>
 </header>
 
 <section>
   <div class="sechead">
-    <h2><span class="num">1</span>Delivery history</h2>
-    <span class="hint">One sprint per line — the size of every item completed</span>
+    <h2><span class="num">1</span><span data-i18n="s1.title">Delivery history</span></h2>
+    <span class="hint" data-i18n="s1.hint"></span>
   </div>
   <div class="panel">
     <div class="grid-params">
       <label style="grid-column:1/-1">
-        <span class="lab">Completed work <em>e.g. S-18: 3, 5, 2, 8 — four items totalling 18 points</em></span>
+        <span class="lab"><span data-i18n="s1.completed"></span> <em data-i18n="s1.completed.em"></em></span>
         <textarea id="p-throughput" rows="8" spellcheck="false">S-14: 5, 3, 8, 3, 2
 S-15: 3, 3, 5, 5, 2
 S-16: 8, 5, 3, 5, 3, 1
@@ -235,66 +235,62 @@ S-22: 3, 2, 3, 5, 5, 3
 S-23: 8, 5, 3</textarea>
       </label>
       <label>
-        <span class="lab">Sprint length <em>working days</em></span>
+        <span class="lab"><span data-i18n="s1.sprintlen"></span> <em data-i18n="s1.sprintlen.em"></em></span>
         <input type="number" id="p-sprintlen" value="10" min="1" max="60">
       </label>
       <label>
-        <span class="lab">Late dependency discovery <em>% of items</em></span>
+        <span class="lab"><span data-i18n="s1.late"></span> <em data-i18n="s1.late.em"></em></span>
         <input type="number" id="p-late" value="34" min="0" max="100" step="1">
       </label>
       <label>
-        <span class="lab">Sprints to forecast</span>
+        <span class="lab"><span data-i18n="s1.horizon"></span></span>
         <input type="number" id="p-horizon" value="3" min="1" max="6">
       </label>
       <label>
-        <span class="lab">Capacity ceiling <em>what limits a sprint</em></span>
-        <select id="p-basis">
-          <option value="both" selected>Points and item count</option>
-          <option value="points">Points only</option>
-          <option value="items">Item count only</option>
-        </select>
-      </label>
-      <label>
-        <span class="lab">When an item doesn't fit</span>
-        <select id="p-backfill">
-          <option value="1" selected>Pull the next one that does</option>
-          <option value="0">Stop the sprint there</option>
-        </select>
-      </label>
-      <label>
-        <span class="lab">Simulation runs</span>
+        <span class="lab"><span data-i18n="s1.runs"></span></span>
         <input type="number" id="p-runs" value="3000" min="200" max="20000" step="100">
+      </label>
+      <label>
+        <span class="lab"><span data-i18n="s1.basis"></span> <em data-i18n="s1.basis.em"></em></span>
+        <select id="p-basis">
+          <option value="both" selected data-i18n="s1.basis.both"></option>
+          <option value="points" data-i18n="s1.basis.points"></option>
+          <option value="items" data-i18n="s1.basis.items"></option>
+        </select>
+      </label>
+      <label>
+        <span class="lab"><span data-i18n="s1.backfill"></span></span>
+        <select id="p-backfill">
+          <option value="1" selected data-i18n="s1.backfill.yes"></option>
+          <option value="0" data-i18n="s1.backfill.no"></option>
+        </select>
       </label>
     </div>
     <div class="row" style="margin-top:22px;gap:12px">
-      <div class="stat"><span class="v mono" id="s-items">—</span><span class="k">Items / sprint · P50</span></div>
-      <div class="stat"><span class="v mono" id="s-pts">—</span><span class="k">Points / sprint · P50</span></div>
-      <div class="stat"><span class="v mono" id="s-p85">—</span><span class="k">Points / sprint at 85% confidence</span></div>
-      <div class="stat"><span class="v mono" id="s-size">—</span><span class="k">Median item size</span></div>
-      <div class="stat"><span class="v mono" id="s-deps">—</span><span class="k">Items waiting on another team</span></div>
+      <div class="stat"><span class="v mono" id="s-items">—</span><span class="k" data-i18n="s1.stat.items"></span></div>
+      <div class="stat"><span class="v mono" id="s-pts">—</span><span class="k" data-i18n="s1.stat.pts"></span></div>
+      <div class="stat"><span class="v mono" id="s-p85">—</span><span class="k" data-i18n="s1.stat.p85"></span></div>
+      <div class="stat"><span class="v mono" id="s-size">—</span><span class="k" data-i18n="s1.stat.size"></span></div>
+      <div class="stat"><span class="v mono" id="s-deps">—</span><span class="k" data-i18n="s1.stat.deps"></span></div>
     </div>
-    <p class="note" style="margin-top:18px;font-size:13px">
-      Each simulated sprint replays a real one drawn at random from this history — by default its item count <em>and</em> its point total
-      both act as a ceiling, so a sprint of six small items and a sprint of three big ones stay distinct possibilities. If your team is limited
-      by one and not the other, say so above.
-    </p>
+    <p class="note" style="margin-top:18px;font-size:13px" data-i18n="s1.note"></p>
   </div>
 </section>
 
 <section>
   <div class="sechead">
-    <h2><span class="num">2</span>Teams you depend on</h2>
-    <span class="hint">85th percentile, not the average — the delay you can plan against</span>
+    <h2><span class="num">2</span><span data-i18n="s2.title">Teams you depend on</span></h2>
+    <span class="hint" data-i18n="s2.hint"></span>
   </div>
   <div class="panel">
     <div class="tblwrap">
       <table>
         <thead>
           <tr>
-            <th style="width:34%">Team</th>
-            <th style="width:26%">Response time · P85 (days)</th>
-            <th style="width:20%">Sprints absorbed</th>
-            <th>Backlog waiting on them</th>
+            <th style="width:32%" data-i18n="s2.th.team"></th>
+            <th style="width:26%" data-i18n="s2.th.p85"></th>
+            <th style="width:20%" data-i18n="s2.th.absorb"></th>
+            <th data-i18n="s2.th.load"></th>
             <th></th>
           </tr>
         </thead>
@@ -302,20 +298,16 @@ S-23: 8, 5, 3</textarea>
       </table>
     </div>
     <div class="row" style="margin-top:16px">
-      <button id="btn-addteam">Add team</button>
+      <button id="btn-addteam" data-i18n="s2.add"></button>
     </div>
-    <p class="note" style="margin-top:16px;font-size:13px">
-      The 85th percentile is the number you commit against: 85% of requests to that team come back within it. The simulation draws each
-      delay from a distribution fitted to it, so most waits are shorter and a few are much longer. A team whose P85 exceeds your sprint
-      length cannot be absorbed inside a sprint — those items are flagged on the board.
-    </p>
+    <p class="note" style="margin-top:16px;font-size:13px" data-i18n="s2.note"></p>
   </div>
 </section>
 
 <section>
   <div class="sechead">
-    <h2><span class="num">3</span>Backlog</h2>
-    <span class="hint">Top of the list is highest priority</span>
+    <h2><span class="num">3</span><span data-i18n="s3.title">Backlog</span></h2>
+    <span class="hint" data-i18n="s3.hint"></span>
   </div>
   <div class="panel">
     <div class="tblwrap">
@@ -323,11 +315,11 @@ S-23: 8, 5, 3</textarea>
         <thead>
           <tr>
             <th></th>
-            <th style="width:14%">Jira key</th>
-            <th>Summary</th>
-            <th style="width:9%">Points</th>
-            <th style="width:18%">Depends on team</th>
-            <th style="width:17%">Dependency state</th>
+            <th style="width:14%" data-i18n="s3.th.key"></th>
+            <th data-i18n="s3.th.summary"></th>
+            <th style="width:9%" data-i18n="s3.th.points"></th>
+            <th style="width:18%" data-i18n="s3.th.team"></th>
+            <th style="width:17%" data-i18n="s3.th.state"></th>
             <th></th>
           </tr>
         </thead>
@@ -335,35 +327,26 @@ S-23: 8, 5, 3</textarea>
       </table>
     </div>
     <div class="row" style="margin-top:16px">
-      <button id="btn-add">Add item</button>
-      <button id="btn-demo" class="ghost">Load demo backlog</button>
-      <button id="btn-clear" class="ghost">Clear all</button>
-      <button id="btn-tmpl" class="ghost">Download .xlsx template</button>
-      <button id="btn-savejson" class="ghost">Export setup (.json)</button>
-      <button id="btn-loadjson" class="ghost">Import setup (.json)</button>
+      <button id="btn-add" data-i18n="s3.add"></button>
+      <button id="btn-demo" class="ghost" data-i18n="s3.demo"></button>
+      <button id="btn-clear" class="ghost" data-i18n="s3.clear"></button>
+      <button id="btn-tmpl" class="ghost" data-i18n="s3.tmpl"></button>
+      <button id="btn-savejson" class="ghost" data-i18n="s3.savejson"></button>
+      <button id="btn-loadjson" class="ghost" data-i18n="s3.loadjson"></button>
     </div>
 
     <div style="margin-top:18px">
       <div class="drop" id="drop">
-        <strong>Import a spreadsheet</strong><br>
-        Drop an .xlsx / .xls / .csv here, or <button id="btn-file" style="padding:5px 14px;margin-left:4px">choose a file</button>
-        <div style="font-size:12px;color:var(--ink-3);margin-top:10px">
-          Backlog columns: <span class="mono">key</span>, <span class="mono">summary</span>, <span class="mono">points</span> (or story points / estimate),
-          <span class="mono">depends on team</span> (or team / dependency), <span class="mono">labels</span>, <span class="mono">state</span>.
-          A second sheet named <span class="mono">Throughput</span> replaces the delivery history.
-        </div>
+        <strong data-i18n="s3.drop"></strong><br>
+        <span data-i18n="s3.dropor"></span>
+        <button id="btn-file" style="padding:5px 14px;margin-left:4px" data-i18n="s3.choose"></button>
+        <div style="font-size:12px;color:var(--ink-3);margin-top:10px" data-i18n="s3.cols"></div>
       </div>
       <input type="file" id="file" accept=".xlsx,.xls,.csv" hidden>
       <input type="file" id="jsonfile" accept=".json" hidden>
       <details style="margin-top:12px">
-        <summary>How teams and labels are read</summary>
-        <p class="note" style="margin-top:6px;font-size:13px">
-          The team column takes a name — <span class="mono">Security</span>, <span class="mono">UX</span>, anything. Names that are new get added
-          to the team table with a placeholder P85 you can correct. A <span class="mono">labels</span> column containing
-          <span class="mono">dep</span> or <span class="mono">blocked</span> marks the item as waiting; one containing <span class="mono">ready</span>
-          or <span class="mono">resolved</span> marks the dependency as already satisfied. An explicit <span class="mono">state</span> column wins.
-          An item marked as waiting with no named team is parked against <span class="mono">Unassigned</span>.
-        </p>
+        <summary data-i18n="s3.details"></summary>
+        <p class="note" style="margin-top:6px;font-size:13px" data-i18n="s3.details.body"></p>
       </details>
       <div id="import-msg"></div>
     </div>
@@ -372,106 +355,408 @@ S-23: 8, 5, 3</textarea>
 
 <section>
   <div class="sechead">
-    <h2><span class="num">4</span>Forecast</h2>
-    <span class="hint" id="run-hint">Recalculates on every change</span>
+    <h2><span class="num">4</span><span data-i18n="s4.title">Forecast</span></h2>
+    <span class="hint" id="run-hint"></span>
   </div>
   <div class="row" style="margin-bottom:18px">
-    <button class="primary" id="btn-run">Run forecast</button>
-    <button class="ghost" id="btn-csv">Export forecast (.csv)</button>
+    <button class="primary" id="btn-run" data-i18n="s4.run"></button>
+    <button class="ghost" id="btn-csv" data-i18n="s4.csv"></button>
   </div>
   <div class="board" id="board"></div>
   <div class="legend">
-    <span><i style="border-color:var(--ink-3);background:#fff"></i>no known dependency</span>
-    <span><i style="border-color:var(--ink);background:var(--signal)"></i>waiting on another team</span>
-    <span><i style="border-color:var(--ink);background:#fff"></i>dependency already satisfied</span>
-    <span><i style="border-color:var(--ink);background:var(--ink)"></i>P85 wait exceeds one sprint</span>
-    <span><i style="border-color:var(--ink);background:var(--ink);width:3px;border-radius:1px"></i>P85 capacity mark on the meter</span>
+    <span><i style="border-color:var(--ink-3);background:#fff"></i><span data-i18n="s4.lg.free"></span></span>
+    <span><i style="border-color:var(--ink);background:var(--signal)"></i><span data-i18n="s4.lg.wait"></span></span>
+    <span><i style="border-color:var(--ink);background:#fff"></i><span data-i18n="s4.lg.ready"></span></span>
+    <span><i style="border-color:var(--ink);background:var(--ink)"></i><span data-i18n="s4.lg.over"></span></span>
+    <span><i style="border-color:var(--ink);background:var(--ink);width:3px;border-radius:1px"></i><span data-i18n="s4.lg.mark"></span></span>
   </div>
-  <p class="note" style="margin-top:18px">
-    The three cells under each item are its cumulative probability of being finished by the end of sprints 1, 2 and 3.
-    A column's header confidence is the share of simulation runs in which <strong>everything planned up to and including that sprint</strong> had
-    actually finished by the end of it. It is always far lower than any single item's number — that gap is the reason sprint commitments miss,
-    and it is the figure worth quoting to a stakeholder.
-  </p>
+  <p class="note" style="margin-top:18px" data-i18n="s4.note"></p>
 </section>
 
 <section>
   <div class="sechead">
-    <h2><span class="num">5</span>What to start, what to raise</h2>
+    <h2><span class="num">5</span><span data-i18n="s5.title">What to start, what to raise</span></h2>
     <span class="hint" id="plan-hint"></span>
   </div>
   <div class="panel">
     <div class="grid-params">
       <label>
-        <span class="lab">Everything done by</span>
+        <span class="lab"><span data-i18n="s5.by"></span></span>
         <select id="pl-mode">
-          <option value="sprints" selected>End of sprint N</option>
-          <option value="date">A calendar date</option>
+          <option value="sprints" selected data-i18n="s5.by.sprints"></option>
+          <option value="date" data-i18n="s5.by.date"></option>
         </select>
       </label>
       <label id="pl-wrapn">
-        <span class="lab">Number of sprints</span>
+        <span class="lab"><span data-i18n="s5.nsprints"></span></span>
         <input type="number" id="pl-sprints" value="3" min="1" max="12">
       </label>
       <label id="pl-wrapd" style="display:none">
-        <span class="lab">Target date</span>
+        <span class="lab"><span data-i18n="s5.date"></span></span>
         <input type="date" id="pl-date">
       </label>
       <label>
-        <span class="lab">Confidence target <em>%</em></span>
+        <span class="lab"><span data-i18n="s5.conf"></span> <em data-i18n="s5.conf.em"></em></span>
         <input type="number" id="pl-conf" value="85" min="50" max="99" step="1">
       </label>
       <label>
-        <span class="lab">Sprint 1 starts</span>
+        <span class="lab"><span data-i18n="s5.start"></span></span>
         <input type="date" id="pl-start">
       </label>
     </div>
     <div class="summary" id="plan-summary"></div>
-    <p class="note" style="margin-top:18px;font-size:13px">
-      Capacity here is the level you hit at your confidence target, and each wait is that team's response time at the same level — at 85%
-      it is exactly the P85 you entered. Raise-by dates are working days back from the sprint the item is scheduled into. This view is
-      arithmetic, not simulation: it tells you what has to be true, while the board above tells you how likely it is.
-    </p>
+    <p class="note" style="margin-top:18px;font-size:13px" data-i18n="s5.note"></p>
   </div>
   <div class="board" id="plan" style="margin-top:16px"></div>
   <div id="plan-late"></div>
 </section>
 
 <section>
-  <div class="sechead"><h2><span class="num">6</span>Where the waiting goes</h2></div>
+  <div class="sechead"><h2><span class="num">6</span><span data-i18n="s6.title">Where the waiting goes</span></h2></div>
   <div class="panel" id="teamload"></div>
 </section>
 
 <section>
-  <div class="sechead"><h2><span class="num">7</span>Method</h2></div>
+  <div class="sechead"><h2><span class="num">7</span><span data-i18n="s7.title">Method</span></h2></div>
   <div class="panel">
-    <p class="note">
-      Each run walks forward sprint by sprint. Every simulated sprint replays one real sprint drawn at random from your delivery history:
-      its point total and its item count are both spent as the team works down the backlog in priority order. Sampling whole sprints rather
-      than an average keeps the covariance between size and count intact — a sprint of six twos and a sprint of two eights are different
-      shapes of capacity, and both stay possible.
-    </p>
-    <p class="note" style="margin-top:12px">
-      The first time an item is picked up, the model rolls its dependency. An item labelled against a team waits on that team.
-      An unlabelled item turns out to have a dependency with probability equal to your discovery rate, and the team it lands on is drawn
-      in proportion to how often each team already appears in the labelled backlog. The wait itself is drawn from an exponential distribution
-      fitted so its 85th percentile matches the figure you entered — mean = P85 ÷ 1.897 — which puts most waits well under the P85 and
-      a long tail above it. The wait is assumed to start at a random point in the sprint, so a wait shorter than a sprint sometimes still lands inside it and sometimes tips over the edge — a team with a P85 of six days costs you far less than one with eighteen. Anything that tips over frees its capacity for whatever is next in the backlog.
-    </p>
-    <p class="note" style="margin-top:12px">
-      The figure at the foot of each column is <span class="mono">unlabelled points × discovery rate × (expected wait ÷ sprint length)</span>,
-      where the expected wait is the weighted mean across the teams. It is a diagnostic showing how much of that column rests on dependencies
-      nobody has spotted — the simulation has already accounted for it, so do not subtract it from capacity a second time.
-    </p>
+    <p class="note" data-i18n="s7.p1"></p>
+    <p class="note" style="margin-top:12px" data-i18n="s7.p2"></p>
+    <p class="note" style="margin-top:12px" data-i18n="s7.p3"></p>
   </div>
 </section>
 
-<p class="foot">Runs entirely in your browser. Nothing is uploaded anywhere.</p>
+<p class="foot" data-i18n="foot"></p>
 
 </div>
 
 <script>
 "use strict";
+
+/* ---------- language ---------- */
+
+var STR = {
+  en: {
+    htmlLang: "en", locale: "en-GB",
+    "brand": "Lean Agile Ninja",
+    "hdr.eyebrow": "Flow forecasting",
+    "hdr.title": "Cross-team dependency forecast",
+    "hdr.sub": "Feed it what your team actually finished each sprint and a backlog labelled with the teams you depend on. It simulates the next few sprints against your measured discovery rate and each team's 85th-percentile response time, then shows where the work is likely to land — and how much capacity to hold back for the dependencies nobody has spotted yet.",
+
+    "s1.title": "Delivery history",
+    "s1.hint": "One sprint per line — the size of every item completed",
+    "s1.completed": "Completed work",
+    "s1.completed.em": "e.g. S-18: 3, 5, 2, 8 — four items totalling 18 points",
+    "s1.sprintlen": "Sprint length", "s1.sprintlen.em": "working days",
+    "s1.late": "Late dependency discovery", "s1.late.em": "% of items",
+    "s1.horizon": "Sprints to forecast",
+    "s1.runs": "Simulation runs",
+    "s1.basis": "Capacity ceiling", "s1.basis.em": "what limits a sprint",
+    "s1.basis.both": "Points and item count", "s1.basis.points": "Points only", "s1.basis.items": "Item count only",
+    "s1.backfill": "When an item doesn't fit",
+    "s1.backfill.yes": "Pull the next one that does", "s1.backfill.no": "Stop the sprint there",
+    "s1.stat.items": "Items / sprint · P50",
+    "s1.stat.pts": "Points / sprint · P50",
+    "s1.stat.p85": "Points / sprint at 85% confidence",
+    "s1.stat.size": "Median item size",
+    "s1.stat.deps": "Items waiting on another team",
+    "s1.note": "Each simulated sprint replays a real one drawn at random from this history — by default its item count <em>and</em> its point total both act as a ceiling, so a sprint of six small items and a sprint of three big ones stay distinct possibilities. If your team is limited by one and not the other, say so above.",
+
+    "s2.title": "Teams you depend on",
+    "s2.hint": "85th percentile, not the average — the delay you can plan against",
+    "s2.th.team": "Team", "s2.th.p85": "Response time · P85 (days)",
+    "s2.th.absorb": "Sprints absorbed", "s2.th.load": "Backlog waiting on them",
+    "s2.add": "Add team",
+    "s2.empty": "No teams yet. Add the teams this one waits on.",
+    "s2.within": "within 1 sprint",
+    "s2.note": "The 85th percentile is the number you commit against: 85% of requests to that team come back within it. The simulation draws each delay from a distribution fitted to it, so most waits are shorter and a few are much longer. A team whose P85 exceeds your sprint length cannot be absorbed inside a sprint — those items are flagged on the board.",
+
+    "s3.title": "Backlog",
+    "s3.hint": "Top of the list is highest priority",
+    "s3.th.key": "Jira key", "s3.th.summary": "Summary", "s3.th.points": "Points",
+    "s3.th.team": "Depends on team", "s3.th.state": "Dependency state",
+    "s3.ph.key": "ABC-123", "s3.ph.summary": "Short summary", "s3.ph.team": "Security",
+    "s3.state.none": "No known dependency", "s3.state.waiting": "Waiting on them", "s3.state.ready": "Already satisfied",
+    "s3.team.none": "— none —",
+    "s3.empty": "No items yet. Add one, load the demo backlog, or import a spreadsheet.",
+    "s3.add": "Add item", "s3.demo": "Load demo backlog", "s3.clear": "Clear all",
+    "s3.tmpl": "Download .xlsx template", "s3.savejson": "Export setup (.json)", "s3.loadjson": "Import setup (.json)",
+    "s3.drop": "Import a spreadsheet", "s3.dropor": "Drop an .xlsx / .xls / .csv here, or", "s3.choose": "choose a file",
+    "s3.cols": "Backlog columns: <span class=\"mono\">key</span>, <span class=\"mono\">summary</span>, <span class=\"mono\">points</span> (or story points / estimate), <span class=\"mono\">depends on team</span> (or team / dependency), <span class=\"mono\">labels</span>, <span class=\"mono\">state</span>. A second sheet named <span class=\"mono\">Throughput</span> replaces the delivery history.",
+    "s3.details": "How teams and labels are read",
+    "s3.details.body": "The team column takes a name — <span class=\"mono\">Security</span>, <span class=\"mono\">UX</span>, anything. Names that are new get added to the team table with a placeholder P85 you can correct. A <span class=\"mono\">labels</span> column containing <span class=\"mono\">dep</span> or <span class=\"mono\">blocked</span> marks the item as waiting; one containing <span class=\"mono\">ready</span> or <span class=\"mono\">resolved</span> marks the dependency as already satisfied. An explicit <span class=\"mono\">state</span> column wins. An item marked as waiting with no named team is parked against <span class=\"mono\">Unassigned</span>.",
+
+    "s4.title": "Forecast",
+    "s4.hint": "Recalculates on every change",
+    "s4.run": "Run forecast", "s4.csv": "Export forecast (.csv)",
+    "s4.runs": "{runs} {w} · replaying {n} recorded sprints",
+    "s4.empty": "Add backlog items to see a forecast.",
+    "s4.conf": "{p} confidence everything through here has landed",
+    "s4.meter": "{pts} pts · {n} items",
+    "s4.nothing": "Nothing lands here at 50% confidence.",
+    "s4.reserve": "<strong>{pts} pts</strong> of this column is expected to slip on dependencies nobody has labelled yet — already priced into the confidence above, not a buffer to add on top.",
+    "s4.beyond": "Beyond the horizon",
+    "s4.beyond.sub": "Below 50% confidence within {n} {w}",
+    "s4.depready": "ok",
+    "s4.unassigned": "unassigned",
+    "s4.tip": "{p} by end of sprint {n}",
+    "s4.lg.free": "no known dependency", "s4.lg.wait": "waiting on another team",
+    "s4.lg.ready": "dependency already satisfied", "s4.lg.over": "P85 wait exceeds one sprint",
+    "s4.lg.mark": "P85 capacity mark on the meter",
+    "s4.note": "The three cells under each item are its cumulative probability of being finished by the end of sprints 1, 2 and 3. A column's header confidence is the share of simulation runs in which <strong>everything planned up to and including that sprint</strong> had actually finished by the end of it. It is always far lower than any single item's number — that gap is the reason sprint commitments miss, and it is the figure worth quoting to a stakeholder.",
+
+    "s5.title": "What to start, what to raise",
+    "s5.by": "Everything done by",
+    "s5.by.sprints": "End of sprint N", "s5.by.date": "A calendar date",
+    "s5.nsprints": "Number of sprints", "s5.date": "Target date",
+    "s5.conf": "Confidence target", "s5.conf.em": "%",
+    "s5.start": "Sprint 1 starts",
+    "s5.note": "Capacity here is the level you hit at your confidence target, and each wait is that team's response time at the same level — at 85% it is exactly the P85 you entered. Raise-by dates are working days back from the sprint the item is scheduled into. This view is arithmetic, not simulation: it tells you what has to be true, while the board above tells you how likely it is.",
+    "s5.empty": "Add backlog items to build a plan.",
+    "s5.hint": "By {date} · {p} confidence",
+    "s5.stat.scope": "{a} of {b}", "s5.stat.scope.k": "items make the target",
+    "s5.stat.req": "{n} {w}", "s5.stat.req.k": "{n} {w}",
+    "s5.stat.miss": "{n} {w}", "s5.stat.miss.k": "{n} {w}",
+    "s5.stat.cap": "{pts} pts", "s5.stat.cap.k": "per sprint at {p} confidence",
+    "s5.colsub": "starts {date} · {a} of {b} free to start",
+    "s5.lane.safe": "Safe to start",
+    "s5.lane.held": "Only if the answer is back",
+    "s5.lane.raise": "Raise with other teams",
+    "s5.nofree": "Nothing here is dependency-free.",
+    "s5.noreq": "No requests due.",
+    "s5.today": "raise today", "s5.by.date2": "raise by {date}",
+    "s5.turn": "{d}d turnaround · unblocks sprint {n}",
+    "s5.miss.title": "Will not make the target",
+    "s5.miss.sub": "At {p} confidence these fall outside {n} {w}. Descope them, or move them up the backlog and push something else out.",
+    "s5.miss.dep": "{team} needs {d}d — longer than the runway",
+    "s5.miss.cap": "no capacity until sprint {n}",
+
+    "s6.title": "Where the waiting goes",
+    "s6.empty": "Add teams and backlog items to see where the waiting accumulates.",
+    "s6.note": "Backlog points waiting on each team, plus the points the simulation expects to discover late. The second number is the one that never appears on a board.",
+    "s6.row": "{known} known · {surprise} expected · P85 {p85}d",
+    "s6.lg.known": "labelled in the backlog", "s6.lg.late": "expected to surface late",
+
+    "s7.title": "Method",
+    "s7.p1": "Each run walks forward sprint by sprint. Every simulated sprint replays one real sprint drawn at random from your delivery history: its point total and its item count are both spent as the team works down the backlog in priority order. Sampling whole sprints rather than an average keeps the covariance between size and count intact — a sprint of six twos and a sprint of two eights are different shapes of capacity, and both stay possible.",
+    "s7.p2": "The first time an item is picked up, the model rolls its dependency. An item labelled against a team waits on that team. An unlabelled item turns out to have a dependency with probability equal to your discovery rate, and the team it lands on is drawn in proportion to how often each team already appears in the labelled backlog. The wait itself is drawn from an exponential distribution fitted so its 85th percentile matches the figure you entered — mean = P85 ÷ 1.897 — which puts most waits well under the P85 and a long tail above it. The wait is assumed to start at a random point in the sprint, so a wait shorter than a sprint sometimes still lands inside it and sometimes tips over the edge — a team with a P85 of six days costs you far less than one with eighteen. Anything that tips over frees its capacity for whatever is next in the backlog.",
+    "s7.p3": "The figure at the foot of each column is <span class=\"mono\">unlabelled points × discovery rate × (expected wait ÷ sprint length)</span>, where the expected wait is the weighted mean across the teams. It is a diagnostic showing how much of that column rests on dependencies nobody has spotted — the simulation has already accounted for it, so do not subtract it from capacity a second time.",
+
+    "foot": "Runs entirely in your browser. Nothing is uploaded anywhere.",
+    "msg.import": "Imported <strong>{n}</strong> {w}{extra} from {name}.",
+    "msg.import.extra": " and {n} {w} of history",
+    "msg.import.bad": "Could not read that file: {err}",
+    "msg.read.bad": "The file could not be read.",
+    "msg.restored": "Setup restored.",
+    "msg.json.bad": "That is not a valid setup file.",
+    "err.emptysheet": "The backlog sheet is empty.",
+    "err.norows": "No rows with a key or summary were found.",
+    "nokey": "(no key)",
+    "free": "free",
+    "pt": "pt",
+    "sprintN": "Sprint {n}",
+    "sprints.n": "{n} {w}",
+    "tmpl.sheet1": "Backlog", "tmpl.sheet2": "Throughput",
+    "tmpl.hdr": ["Key","Summary","Story Points","Depends On Team","Labels","State"],
+    "tmpl.sprint": "Sprint", "tmpl.sizes": "Size of each completed item →",
+    "f.sprint": ["sprint","sprints"],
+    "f.item": ["item","items"],
+    "f.request": ["request","requests"],
+    "f.run": ["run","runs"],
+    "f.blocked": ["blocked by a dependency","blocked by a dependency"],
+    "f.must": ["must go out today","must go out today"]
+  },
+
+  pl: {
+    htmlLang: "pl", locale: "pl-PL",
+    "brand": "Lean Agile Ninja",
+    "hdr.eyebrow": "Prognozowanie przepływu",
+    "hdr.title": "Prognoza zależności międzyzespołowych",
+    "hdr.sub": "Podaj, co zespół faktycznie ukończył w kolejnych sprintach, oraz backlog z oznaczonymi zespołami, od których zależycie. Narzędzie symuluje kilka najbliższych sprintów na podstawie zmierzonego odsetka późnych wykryć i 85. percentyla czasu odpowiedzi każdego zespołu, a następnie pokazuje, gdzie praca prawdopodobnie wyląduje — i ile przepustowości zostawić na zależności, których nikt jeszcze nie zauważył.",
+
+    "s1.title": "Historia dostarczania",
+    "s1.hint": "Jeden sprint w wierszu — rozmiar każdego ukończonego elementu",
+    "s1.completed": "Ukończona praca",
+    "s1.completed.em": "np. S-18: 3, 5, 2, 8 — cztery elementy, łącznie 18 punktów",
+    "s1.sprintlen": "Długość sprintu", "s1.sprintlen.em": "dni robocze",
+    "s1.late": "Późne wykrycie zależności", "s1.late.em": "% elementów",
+    "s1.horizon": "Liczba sprintów w prognozie",
+    "s1.runs": "Liczba przebiegów symulacji",
+    "s1.basis": "Ograniczenie przepustowości", "s1.basis.em": "co limituje sprint",
+    "s1.basis.both": "Punkty i liczba elementów", "s1.basis.points": "Tylko punkty", "s1.basis.items": "Tylko liczba elementów",
+    "s1.backfill": "Gdy element się nie mieści",
+    "s1.backfill.yes": "Weź kolejny, który się zmieści", "s1.backfill.no": "Zakończ sprint w tym miejscu",
+    "s1.stat.items": "Elementy / sprint · P50",
+    "s1.stat.pts": "Punkty / sprint · P50",
+    "s1.stat.p85": "Punkty / sprint przy 85% pewności",
+    "s1.stat.size": "Mediana rozmiaru elementu",
+    "s1.stat.deps": "Elementy czekające na inny zespół",
+    "s1.note": "Każdy symulowany sprint odtwarza prawdziwy sprint wylosowany z tej historii — domyślnie zarówno liczba elementów, <em>jak i</em> suma punktów działają jako limit, więc sprint z sześcioma małymi elementami i sprint z trzema dużymi pozostają osobnymi możliwościami. Jeśli zespół ogranicza tylko jedno z nich, zaznacz to powyżej.",
+
+    "s2.title": "Zespoły, od których zależycie",
+    "s2.hint": "85. percentyl, nie średnia — opóźnienie, na którym można planować",
+    "s2.th.team": "Zespół", "s2.th.p85": "Czas odpowiedzi · P85 (dni)",
+    "s2.th.absorb": "Mieści się w sprintach", "s2.th.load": "Backlog czekający na nich",
+    "s2.add": "Dodaj zespół",
+    "s2.empty": "Brak zespołów. Dodaj te, na które czekacie.",
+    "s2.within": "mieści się w 1 sprincie",
+    "s2.note": "85. percentyl to liczba, na którą się umawiacie: 85% zgłoszeń do tego zespołu wraca w tym czasie. Symulacja losuje każde opóźnienie z rozkładu dopasowanego do tej wartości, więc większość oczekiwań jest krótsza, a nieliczne znacznie dłuższe. Zespołu, którego P85 przekracza długość sprintu, nie da się zmieścić w jednym sprincie — takie elementy są oznaczone na tablicy.",
+
+    "s3.title": "Backlog",
+    "s3.hint": "Góra listy to najwyższy priorytet",
+    "s3.th.key": "Klucz Jira", "s3.th.summary": "Opis", "s3.th.points": "Punkty",
+    "s3.th.team": "Zależy od zespołu", "s3.th.state": "Stan zależności",
+    "s3.ph.key": "ABC-123", "s3.ph.summary": "Krótki opis", "s3.ph.team": "Bezpieczeństwo",
+    "s3.state.none": "Brak znanej zależności", "s3.state.waiting": "Czekamy na nich", "s3.state.ready": "Już rozwiązana",
+    "s3.team.none": "— brak —",
+    "s3.empty": "Brak elementów. Dodaj element, wczytaj przykładowy backlog albo zaimportuj arkusz.",
+    "s3.add": "Dodaj element", "s3.demo": "Wczytaj przykładowy backlog", "s3.clear": "Wyczyść wszystko",
+    "s3.tmpl": "Pobierz szablon .xlsx", "s3.savejson": "Eksportuj ustawienia (.json)", "s3.loadjson": "Importuj ustawienia (.json)",
+    "s3.drop": "Zaimportuj arkusz", "s3.dropor": "Upuść tu plik .xlsx / .xls / .csv albo", "s3.choose": "wybierz plik",
+    "s3.cols": "Kolumny backlogu: <span class=\"mono\">key</span>, <span class=\"mono\">summary</span>, <span class=\"mono\">points</span> (albo story points / estimate), <span class=\"mono\">depends on team</span> (albo team / dependency), <span class=\"mono\">labels</span>, <span class=\"mono\">state</span>. Drugi arkusz o nazwie <span class=\"mono\">Throughput</span> zastępuje historię dostarczania.",
+    "s3.details": "Jak czytane są zespoły i etykiety",
+    "s3.details.body": "Kolumna zespołu przyjmuje nazwę — <span class=\"mono\">Bezpieczeństwo</span>, <span class=\"mono\">UX</span>, dowolną. Nowe nazwy trafiają do tabeli zespołów z zastępczym P85, które można poprawić. Kolumna <span class=\"mono\">labels</span> zawierająca <span class=\"mono\">dep</span> lub <span class=\"mono\">blocked</span> oznacza element jako oczekujący; zawierająca <span class=\"mono\">ready</span> lub <span class=\"mono\">resolved</span> — jako zależność już rozwiązaną. Jawna kolumna <span class=\"mono\">state</span> ma pierwszeństwo. Element oczekujący bez nazwy zespołu trafia do <span class=\"mono\">Unassigned</span>.",
+
+    "s4.title": "Prognoza",
+    "s4.hint": "Przelicza się przy każdej zmianie",
+    "s4.run": "Uruchom prognozę", "s4.csv": "Eksportuj prognozę (.csv)",
+    "s4.runs": "{runs} {w} · odtwarzanie {n} zapisanych sprintów",
+    "s4.empty": "Dodaj elementy backlogu, aby zobaczyć prognozę.",
+    "s4.conf": "{p} pewności, że wszystko do tego miejsca zostało ukończone",
+    "s4.meter": "{pts} pkt · {n} elem.",
+    "s4.nothing": "Nic tu nie trafia przy 50% pewności.",
+    "s4.reserve": "<strong>{pts} pkt</strong> z tej kolumny prawdopodobnie ześlizgnie się na zależnościach, których nikt jeszcze nie oznaczył — jest to już wliczone w pewność powyżej, a nie bufor do dodania osobno.",
+    "s4.beyond": "Poza horyzontem",
+    "s4.beyond.sub": "Poniżej 50% pewności w ciągu {n} {w}",
+    "s4.depready": "ok",
+    "s4.unassigned": "bez zespołu",
+    "s4.tip": "{p} do końca sprintu {n}",
+    "s4.lg.free": "brak znanej zależności", "s4.lg.wait": "czeka na inny zespół",
+    "s4.lg.ready": "zależność już rozwiązana", "s4.lg.over": "P85 przekracza jeden sprint",
+    "s4.lg.mark": "znacznik przepustowości P85 na pasku",
+    "s4.note": "Trzy pola pod każdym elementem to skumulowane prawdopodobieństwo ukończenia go do końca sprintu 1, 2 i 3. Pewność w nagłówku kolumny to odsetek przebiegów symulacji, w których <strong>wszystko zaplanowane do tego sprintu włącznie</strong> faktycznie zostało ukończone. Zawsze jest znacznie niższa niż liczba dla pojedynczego elementu — ta różnica jest powodem, dla którego zobowiązania sprintowe nie wychodzą, i to ją warto podawać interesariuszom.",
+
+    "s5.title": "Co zacząć, a co zgłosić",
+    "s5.by": "Wszystko ukończone do",
+    "s5.by.sprints": "Końca sprintu N", "s5.by.date": "Daty kalendarzowej",
+    "s5.nsprints": "Liczba sprintów", "s5.date": "Data docelowa",
+    "s5.conf": "Docelowa pewność", "s5.conf.em": "%",
+    "s5.start": "Sprint 1 zaczyna się",
+    "s5.note": "Przepustowość to poziom osiągany przy zadanej pewności, a każde oczekiwanie to czas odpowiedzi zespołu na tym samym poziomie — przy 85% jest to dokładnie wprowadzone P85. Terminy zgłoszenia liczone są w dniach roboczych wstecz od sprintu, na który element jest zaplanowany. Ten widok to arytmetyka, nie symulacja: mówi, co musi się wydarzyć, podczas gdy tablica powyżej mówi, jak to prawdopodobne.",
+    "s5.empty": "Dodaj elementy backlogu, aby zbudować plan.",
+    "s5.hint": "Do {date} · {p} pewności",
+    "s5.stat.scope": "{a} z {b}", "s5.stat.scope.k": "elementów zdąży na termin",
+    "s5.stat.req": "{n} {w}", "s5.stat.req.k": "{n} {w}",
+    "s5.stat.miss": "{n} {w}", "s5.stat.miss.k": "{n} {w}",
+    "s5.stat.cap": "{pts} pkt", "s5.stat.cap.k": "na sprint przy {p} pewności",
+    "s5.colsub": "start {date} · {a} z {b} gotowych do rozpoczęcia",
+    "s5.lane.safe": "Bezpieczne do rozpoczęcia",
+    "s5.lane.held": "Tylko jeśli odpowiedź wróci",
+    "s5.lane.raise": "Zgłoś innym zespołom",
+    "s5.nofree": "Nic tutaj nie jest wolne od zależności.",
+    "s5.noreq": "Brak zgłoszeń na ten sprint.",
+    "s5.today": "zgłoś dziś", "s5.by.date2": "zgłoś do {date}",
+    "s5.turn": "czas odpowiedzi {d} dni · odblokowuje sprint {n}",
+    "s5.miss.title": "Nie zdąży na termin",
+    "s5.miss.sub": "Przy {p} pewności te elementy wypadają poza {n} {w}. Usuń je z zakresu albo przesuń w górę backlogu, wypychając coś innego.",
+    "s5.miss.dep": "{team} potrzebuje {d} dni — dłużej niż zostało czasu",
+    "s5.miss.cap": "brak przepustowości do sprintu {n}",
+
+    "s6.title": "Gdzie czeka praca",
+    "s6.empty": "Dodaj zespoły i elementy backlogu, aby zobaczyć, gdzie gromadzi się oczekiwanie.",
+    "s6.note": "Punkty backlogu czekające na każdy zespół oraz punkty, które symulacja spodziewa się wykryć późno. Ta druga liczba nigdy nie pojawia się na żadnej tablicy.",
+    "s6.row": "{known} znane · {surprise} oczekiwane · P85 {p85} dni",
+    "s6.lg.known": "oznaczone w backlogu", "s6.lg.late": "spodziewane późne wykrycie",
+
+    "s7.title": "Metoda",
+    "s7.p1": "Każdy przebieg idzie sprint po sprincie. Każdy symulowany sprint odtwarza jeden prawdziwy sprint wylosowany z historii dostarczania: jego suma punktów i liczba elementów są wydawane, gdy zespół schodzi w dół backlogu w kolejności priorytetów. Losowanie całych sprintów zamiast średniej zachowuje zależność między rozmiarem a liczbą — sprint z sześcioma dwójkami i sprint z dwiema ósemkami to inne kształty przepustowości i oba pozostają możliwe.",
+    "s7.p2": "Przy pierwszym podjęciu elementu model losuje jego zależność. Element oznaczony zespołem czeka na ten zespół. Element nieoznaczony okazuje się zależny z prawdopodobieństwem równym odsetkowi późnych wykryć, a zespół losowany jest proporcjonalnie do tego, jak często występuje już w oznaczonym backlogu. Samo oczekiwanie losowane jest z rozkładu wykładniczego dopasowanego tak, by jego 85. percentyl odpowiadał wprowadzonej wartości — średnia = P85 ÷ 1,897 — co daje większość oczekiwań poniżej P85 i długi ogon powyżej. Zakładamy, że oczekiwanie zaczyna się w losowym momencie sprintu, więc oczekiwanie krótsze niż sprint czasem jeszcze się w nim mieści, a czasem przelewa poza jego koniec — zespół z P85 równym sześć dni kosztuje znacznie mniej niż taki z osiemnastoma. To, co się przeleje, zwalnia przepustowość dla kolejnego elementu backlogu.",
+    "s7.p3": "Liczba u dołu każdej kolumny to <span class=\"mono\">punkty nieoznaczone × odsetek wykryć × (oczekiwane oczekiwanie ÷ długość sprintu)</span>, gdzie oczekiwane oczekiwanie to średnia ważona po zespołach. To wskaźnik diagnostyczny pokazujący, jak duża część kolumny opiera się na niezauważonych zależnościach — symulacja już to uwzględniła, więc nie odejmuj tego od przepustowości po raz drugi.",
+
+    "foot": "Działa w całości w przeglądarce. Nic nie jest nigdzie wysyłane.",
+    "msg.import": "Zaimportowano <strong>{n}</strong> {w}{extra} z {name}.",
+    "msg.import.extra": " oraz {n} {w} historii",
+    "msg.import.bad": "Nie udało się odczytać pliku: {err}",
+    "msg.read.bad": "Nie udało się odczytać pliku.",
+    "msg.restored": "Ustawienia przywrócone.",
+    "msg.json.bad": "To nie jest prawidłowy plik ustawień.",
+    "err.emptysheet": "Arkusz backlogu jest pusty.",
+    "err.norows": "Nie znaleziono wierszy z kluczem ani opisem.",
+    "nokey": "(brak klucza)",
+    "free": "wolne",
+    "pt": "pkt",
+    "sprintN": "Sprint {n}",
+    "sprints.n": "{n} {w}",
+    "tmpl.sheet1": "Backlog", "tmpl.sheet2": "Throughput",
+    "tmpl.hdr": ["Key","Summary","Story Points","Depends On Team","Labels","State"],
+    "tmpl.sprint": "Sprint", "tmpl.sizes": "Rozmiar każdego ukończonego elementu →",
+    "f.sprint": ["sprint","sprinty","sprintów"],
+    "f.item": ["element","elementy","elementów"],
+    "f.request": ["zgłoszenie","zgłoszenia","zgłoszeń"],
+    "f.run": ["przebieg","przebiegi","przebiegów"],
+    "f.blocked": ["zablokowany zależnością","zablokowane zależnością","zablokowanych zależnością"],
+    "f.must": ["musi wyjść dziś","muszą wyjść dziś","musi wyjść dziś"]
+  }
+};
+
+var LANG = (function(){
+  var q = /[?&]lang=(en|pl)/.exec(location.search);
+  if (q) return q[1];
+  return (navigator.language || "en").toLowerCase().indexOf("pl") === 0 ? "pl" : "en";
+})();
+
+function t(key, vars){
+  var s = STR[LANG][key];
+  if (s === undefined) s = STR.en[key];
+  if (s === undefined) return key;
+  if (vars){
+    s = String(s).replace(/\{(\w+)\}/g, function(m, k){
+      return vars[k] === undefined ? m : vars[k];
+    });
+  }
+  return s;
+}
+function locale(){ return STR[LANG].locale; }
+
+/* Polish agrees the noun with the number: 1 sprint, 2 sprinty, 5 sprintów */
+function pluralIndex(n){
+  n = Math.abs(Math.round(n));
+  if (LANG === "pl"){
+    if (n === 1) return 0;
+    var d = n % 10, h2 = n % 100;
+    return (d >= 2 && d <= 4 && !(h2 >= 12 && h2 <= 14)) ? 1 : 2;
+  }
+  return n === 1 ? 0 : 1;
+}
+function nw(n, key){
+  var forms = STR[LANG][key] || STR.en[key] || [""];
+  return forms[Math.min(pluralIndex(n), forms.length - 1)];
+}
+function fmtN(x){ return Number(x).toLocaleString(locale()); }
+
+function applyLang(){
+  document.documentElement.lang = STR[LANG].htmlLang;
+  var nodes = document.querySelectorAll("[data-i18n]");
+  for (var i = 0; i < nodes.length; i++){
+    nodes[i].innerHTML = t(nodes[i].getAttribute("data-i18n"));
+  }
+  var phs = document.querySelectorAll("[data-i18n-ph]");
+  for (var j = 0; j < phs.length; j++){
+    phs[j].setAttribute("placeholder", t(phs[j].getAttribute("data-i18n-ph")));
+  }
+  var btns = document.querySelectorAll("[data-lang]");
+  for (var k = 0; k < btns.length; k++){
+    btns[k].setAttribute("aria-pressed", btns[k].getAttribute("data-lang") === LANG ? "true" : "false");
+  }
+}
+
+function setLang(code){
+  if (code === LANG) return;
+  LANG = code;
+  applyLang();
+  renderTeams();
+  renderTable();
+  runForecast();
+}
 
 var P85_FACTOR = 1.8971;   /* -ln(0.15) : converts an exponential mean to its 85th percentile */
 
@@ -577,126 +862,6 @@ function expectedWait(){
   var w = surpriseWeights(), sum = 0;
   for (var i = 0; i < teams.length; i++) sum += w[i] * teamMean(teams[i]);
   return sum;
-}
-
-/* ---------- team table ---------- */
-
-function renderTeams(){
-  var p = readParams();
-  var tb = $("teambody");
-  tb.innerHTML = "";
-  if (!teams.length){
-    tb.innerHTML = '<tr><td colspan="5" class="empty">No teams yet. Add the teams this one waits on.</td></tr>';
-    return;
-  }
-  teams.forEach(function(t, i){
-    var waiting = items.filter(function(it){ return it.state === "waiting" && teamIndex(it.team) === i; });
-    var pts = waiting.reduce(function(a, b){ return a + (+b.points || 0); }, 0);
-    var sprints = Math.max(1, Math.ceil((+t.p85 || 0) / p.sprintLen));
-    var over = (+t.p85 || 0) > p.sprintLen;
-    var tr = document.createElement("tr");
-    tr.innerHTML =
-      '<td><input type="text" data-tf="name" data-ti="' + i + '" value="' + esc(t.name) + '" placeholder="Security"></td>' +
-      '<td><input type="number" data-tf="p85" data-ti="' + i + '" value="' + (+t.p85 || 0) + '" min="0" step="0.5"></td>' +
-      '<td>' + (over ? '<span class="tag block">' + sprints + ' sprints</span>' : '<span class="pts">within 1 sprint</span>') + '</td>' +
-      '<td><span class="pts">' + waiting.length + ' items · ' + r1(pts) + ' pts</span></td>' +
-      '<td><button class="del" data-teamdel="' + i + '" title="Remove team" aria-label="Remove team">&times;</button></td>';
-    tb.appendChild(tr);
-  });
-}
-
-$("teambody").addEventListener("input", function(e){
-  var t = e.target, i = t.getAttribute("data-ti"), f = t.getAttribute("data-tf");
-  if (i === null || !f) return;
-  teams[+i][f] = (f === "p85") ? (parseFloat(t.value) || 0) : t.value;
-  if (f === "name") renderTable();
-});
-$("teambody").addEventListener("change", function(){ renderTeams(); runForecast(); });
-$("teambody").addEventListener("click", function(e){
-  var d = e.target.getAttribute("data-teamdel");
-  if (d === null) return;
-  var name = teams[+d].name;
-  teams.splice(+d, 1);
-  items.forEach(function(it){ if (it.team === name){ it.team = ""; it.state = "none"; } });
-  renderTeams(); renderTable(); runForecast();
-});
-$("btn-addteam").addEventListener("click", function(){
-  teams.push({ name: "", p85: 10 });
-  renderTeams(); renderTable();
-  var inputs = $("teambody").querySelectorAll('input[data-tf="name"]');
-  if (inputs.length) inputs[inputs.length - 1].focus();
-});
-
-/* ---------- backlog table ---------- */
-
-function blankItem(){ return { key:"", summary:"", points:3, team:"", state:"none" }; }
-
-function teamOptions(sel){
-  var html = '<option value=""' + (!sel ? " selected" : "") + '>— none —</option>';
-  teams.forEach(function(t){
-    var n = t.name || "(unnamed)";
-    html += '<option value="' + esc(t.name) + '"' + (t.name && t.name === sel ? " selected" : "") + '>' + esc(n) + '</option>';
-  });
-  return html;
-}
-
-function renderTable(){
-  var tb = $("tbody");
-  tb.innerHTML = "";
-  if (!items.length){
-    tb.innerHTML = '<tr><td colspan="7" class="empty">No items yet. Add one, load the demo backlog, or import a spreadsheet.</td></tr>';
-    return;
-  }
-  items.forEach(function(it, i){
-    var tr = document.createElement("tr");
-    tr.innerHTML =
-      '<td class="ord">' + (i + 1) + '</td>' +
-      '<td><input type="text" data-f="key" data-i="' + i + '" value="' + esc(it.key) + '" placeholder="ABC-123"></td>' +
-      '<td><input type="text" data-f="summary" data-i="' + i + '" value="' + esc(it.summary) + '" placeholder="Short summary"></td>' +
-      '<td><input type="number" data-f="points" data-i="' + i + '" value="' + (+it.points || 0) + '" min="0" step="0.5"></td>' +
-      '<td><select data-f="team" data-i="' + i + '">' + teamOptions(it.team) + '</select></td>' +
-      '<td><select data-f="state" data-i="' + i + '">' +
-        '<option value="none"' + (it.state === "none" ? " selected" : "") + '>No known dependency</option>' +
-        '<option value="waiting"' + (it.state === "waiting" ? " selected" : "") + '>Waiting on them</option>' +
-        '<option value="ready"' + (it.state === "ready" ? " selected" : "") + '>Already satisfied</option>' +
-      '</select></td>' +
-      '<td><button class="del" data-del="' + i + '" title="Remove item" aria-label="Remove item">&times;</button></td>';
-    tb.appendChild(tr);
-  });
-}
-
-$("tbody").addEventListener("input", function(e){
-  var t = e.target, i = t.getAttribute("data-i"), f = t.getAttribute("data-f");
-  if (i === null || !f) return;
-  items[+i][f] = (f === "points") ? (parseFloat(t.value) || 0) : t.value;
-  updateStats();
-});
-$("tbody").addEventListener("change", function(e){
-  var t = e.target, i = t.getAttribute("data-i"), f = t.getAttribute("data-f");
-  if (i === null || !f) return;
-  items[+i][f] = t.value;
-  if (f === "team" && t.value && items[+i].state === "none") items[+i].state = "waiting";
-  if (f === "state" && t.value !== "none" && !items[+i].team && teams.length) items[+i].team = teams[0].name;
-  renderTable(); renderTeams(); runForecast();
-});
-$("tbody").addEventListener("click", function(e){
-  var d = e.target.getAttribute("data-del");
-  if (d === null) return;
-  items.splice(+d, 1);
-  renderTable(); renderTeams(); runForecast();
-});
-
-function updateStats(){
-  var p = readParams();
-  var counts = p.history.map(function(s){ return s.count; });
-  var pts = p.history.map(function(s){ return s.points; });
-  var sizes = [];
-  p.history.forEach(function(s){ sizes = sizes.concat(s.sizes); });
-  $("s-items").textContent = r1(percentile(counts, 0.5));
-  $("s-pts").textContent = r1(percentile(pts, 0.5));
-  $("s-p85").textContent = r1(percentile(pts, 0.15));
-  $("s-size").textContent = r1(percentile(sizes, 0.5));
-  $("s-deps").textContent = items.filter(function(i){ return i.state === "waiting"; }).length + " / " + items.length;
 }
 
 /* ---------- simulation ---------- */
@@ -806,135 +971,6 @@ function runSim(p){
   };
 }
 
-/* ---------- board ---------- */
-
-function renderBoard(f, p){
-  var board = $("board");
-  board.innerHTML = "";
-  if (!f){
-    board.innerHTML = '<p class="empty">Add backlog items to see a forecast.</p>';
-    return;
-  }
-  var ptsHist = p.history.map(function(s){ return s.points; });
-  var p85 = percentile(ptsHist, 0.15);
-  var scaleMax = Math.max(percentile(ptsHist, 0.5), p85, 1) * 1.35;
-  var eWait = expectedWait();
-
-  for (var s = 0; s < p.horizon; s++){
-    var col = f.cols[s];
-    var pts = col.reduce(function(a, i){ return a + (+items[i].points || 0); }, 0);
-    var unlabelled = col.filter(function(i){ return items[i].state === "none"; })
-                        .reduce(function(a, i){ return a + (+items[i].points || 0); }, 0);
-    var reserve = unlabelled * p.pLate * (eWait / p.sprintLen);
-
-    var d = document.createElement("div");
-    d.className = "col";
-    d.style.setProperty("--conf", Math.round(f.joint[s] * 100) + "%");
-    var html =
-      '<h3>Sprint ' + (s + 1) + '</h3>' +
-      '<p class="pts">' + pct(f.joint[s]) + ' confidence everything through here has landed</p>' +
-      '<div class="meter">' +
-        '<i style="width:' + Math.min(100, pts / scaleMax * 100) + '%"></i>' +
-        '<b style="left:' + Math.min(100, p85 / scaleMax * 100) + '%"></b>' +
-      '</div>' +
-      '<div class="meterlab"><span>' + r1(pts) + ' pts · ' + col.length + ' items</span><span>P85 ' + r1(p85) + '</span></div>';
-
-    if (!col.length){
-      html += '<p class="empty">Nothing lands here at 50% confidence.</p>';
-    } else {
-      col.forEach(function(i){ html += itemHtml(i, f, p); });
-    }
-    html += '<div class="reserve"><strong>' + r1(reserve) + ' pts</strong> of this column is expected to slip on dependencies ' +
-            'nobody has labelled yet — already priced into the confidence above, not a buffer to add on top.</div>';
-    d.innerHTML = html;
-    board.appendChild(d);
-  }
-
-  var beyond = [];
-  for (var i2 = 0; i2 < items.length; i2++){
-    if (f.placement[i2] < 0 || f.placement[i2] >= p.horizon) beyond.push(i2);
-  }
-  if (beyond.length){
-    var b = document.createElement("div");
-    b.className = "col beyond";
-    var bh = '<h3>Beyond the horizon</h3><p class="pts">Below 50% confidence within ' + p.horizon + ' sprints</p><div style="height:14px"></div>';
-    beyond.forEach(function(i){ bh += itemHtml(i, f, p); });
-    b.innerHTML = bh;
-    board.appendChild(b);
-  }
-}
-
-function itemHtml(i, f, p){
-  var it = items[i];
-  var badge = "";
-  if (it.state === "waiting"){
-    var ti = teamIndex(it.team);
-    var over = ti >= 0 && (+teams[ti].p85 || 0) > p.sprintLen;
-    badge = '<span class="tag ' + (over ? "block" : "wait") + '">' + esc(it.team || "unassigned") + '</span>';
-  } else if (it.state === "ready"){
-    badge = '<span class="tag ready">' + esc(it.team || "dep ready") + ' ok</span>';
-  }
-  var strip = '<div class="strip">';
-  for (var s = 0; s < Math.min(3, p.horizon); s++){
-    var v = f.cum[i][s] || 0;
-    strip += '<span title="' + pct(v) + ' by end of sprint ' + (s + 1) + '">' +
-             '<i style="height:' + Math.round(v * 100) + '%"></i>' +
-             '<u>' + Math.round(v * 100) + '</u></span>';
-  }
-  strip += '</div>';
-  return '<div class="item">' +
-    '<span class="k">' + esc(it.key || "(no key)") + '</span>' +
-    '<span>' + badge + ' <span class="pts">' + (+it.points || 0) + ' pt</span></span>' +
-    (it.summary ? '<span class="s">' + esc(it.summary) + '</span>' : '') +
-    strip +
-  '</div>';
-}
-
-function renderTeamLoad(f, p){
-  var host = $("teamload");
-  if (!f || !teams.length){
-    host.innerHTML = '<p class="empty">Add teams and backlog items to see where the waiting accumulates.</p>';
-    return;
-  }
-  var rows = teams.map(function(t, i){
-    var known = items.filter(function(it){ return it.state === "waiting" && teamIndex(it.team) === i; })
-                     .reduce(function(a, b){ return a + (+b.points || 0); }, 0);
-    var surprise = f.surprisePts[i] || 0;
-    return { name: t.name || "(unnamed)", p85: +t.p85 || 0, known: known, surprise: surprise, total: known + surprise };
-  });
-  var max = Math.max.apply(null, rows.map(function(r){ return r.total; }).concat([1]));
-  var html = '<p class="note" style="margin-bottom:18px">Backlog points waiting on each team, plus the points the simulation expects ' +
-             'to discover late. The second number is the one that never appears on a board.</p>';
-  rows.sort(function(a, b){ return b.total - a.total; }).forEach(function(r){
-    html +=
-      '<div style="display:grid;grid-template-columns:150px 1fr 160px;gap:14px;align-items:center;margin-bottom:11px">' +
-        '<span style="font-size:13.5px;font-weight:600">' + esc(r.name) + '</span>' +
-        '<span style="display:flex;height:16px;border-radius:5px;overflow:hidden;box-shadow:inset 0 0 0 1px rgba(0,0,0,.16);background:#fff">' +
-          '<span style="width:' + (r.known / max * 100) + '%;background:var(--ink)"></span>' +
-          '<span style="width:' + (r.surprise / max * 100) + '%;background:var(--signal)"></span>' +
-        '</span>' +
-        '<span class="pts">' + r1(r.known) + ' known · ' + r1(r.surprise) + ' expected · P85 ' + r1(r.p85) + 'd</span>' +
-      '</div>';
-  });
-  html += '<div class="legend" style="margin-top:16px">' +
-          '<span><i style="border-color:var(--ink);background:var(--ink)"></i>labelled in the backlog</span>' +
-          '<span><i style="border-color:var(--ink);background:var(--signal)"></i>expected to surface late</span></div>';
-  host.innerHTML = html;
-}
-
-function runForecast(){
-  var p = readParams();
-  updateStats();
-  if (!items.length){ lastForecast = null; renderBoard(null, p); renderTeamLoad(null, p); renderPlan(); return; }
-  var f = runSim(p);
-  lastForecast = { f: f, p: p };
-  renderBoard(f, p);
-  renderTeamLoad(f, p);
-  renderPlan();
-  $("run-hint").textContent = p.runs + " runs · replaying " + p.history.length + " recorded sprints";
-}
-
-
 /* ---------- what to start, what to raise ---------- */
 
 function toISO(d){
@@ -961,7 +997,7 @@ function workingBetween(a, b){
   return n * sign;
 }
 function fmtDate(d){
-  return d.toLocaleDateString(undefined, { day: "numeric", month: "short" });
+  return d.toLocaleDateString(locale(), { day: "numeric", month: "short" });
 }
 function todayMidnight(){
   var d = new Date(); d.setHours(0,0,0,0); return d;
@@ -1076,12 +1112,268 @@ function buildPlan(){
            targetDate: sprintStart(K + 1), conf: pl.conf, sprintLen: p.sprintLen };
 }
 
+
+/* ---------- team table ---------- */
+
+function renderTeams(){
+  var p = readParams();
+  var tb = $("teambody");
+  tb.innerHTML = "";
+  if (!teams.length){
+    tb.innerHTML = '<tr><td colspan="5" class="empty">' + t("s2.empty") + '</td></tr>';
+    return;
+  }
+  teams.forEach(function(tm, i){
+    var waiting = items.filter(function(it){ return it.state === "waiting" && teamIndex(it.team) === i; });
+    var pts = waiting.reduce(function(a, b){ return a + (+b.points || 0); }, 0);
+    var sprints = Math.max(1, Math.ceil((+tm.p85 || 0) / p.sprintLen));
+    var over = (+tm.p85 || 0) > p.sprintLen;
+    var tr = document.createElement("tr");
+    tr.innerHTML =
+      '<td><input type="text" data-tf="name" data-ti="' + i + '" value="' + esc(tm.name) + '" placeholder="' + esc(t("s3.ph.team")) + '"></td>' +
+      '<td><input type="number" data-tf="p85" data-ti="' + i + '" value="' + (+tm.p85 || 0) + '" min="0" step="0.5"></td>' +
+      '<td>' + (over ? '<span class="tag block">' + t("sprints.n", { n: sprints, w: nw(sprints, "f.sprint") }) + '</span>'
+                     : '<span class="pts">' + t("s2.within") + '</span>') + '</td>' +
+      '<td><span class="pts">' + waiting.length + ' &middot; ' + fmtN(r1(pts)) + ' ' + t("pt") + '</span></td>' +
+      '<td><button class="del" data-teamdel="' + i + '" aria-label="&times;">&times;</button></td>';
+    tb.appendChild(tr);
+  });
+}
+
+$("teambody").addEventListener("input", function(e){
+  var el = e.target, i = el.getAttribute("data-ti"), f = el.getAttribute("data-tf");
+  if (i === null || !f) return;
+  teams[+i][f] = (f === "p85") ? (parseFloat(el.value) || 0) : el.value;
+  if (f === "name") renderTable();
+});
+$("teambody").addEventListener("change", function(){ renderTeams(); runForecast(); });
+$("teambody").addEventListener("click", function(e){
+  var d = e.target.getAttribute("data-teamdel");
+  if (d === null) return;
+  var name = teams[+d].name;
+  teams.splice(+d, 1);
+  items.forEach(function(it){ if (it.team === name){ it.team = ""; it.state = "none"; } });
+  renderTeams(); renderTable(); runForecast();
+});
+$("btn-addteam").addEventListener("click", function(){
+  teams.push({ name: "", p85: 10 });
+  renderTeams(); renderTable();
+  var inputs = $("teambody").querySelectorAll('input[data-tf="name"]');
+  if (inputs.length) inputs[inputs.length - 1].focus();
+});
+
+/* ---------- backlog table ---------- */
+
+function blankItem(){ return { key:"", summary:"", points:3, team:"", state:"none" }; }
+
+function teamOptions(sel){
+  var html = '<option value=""' + (!sel ? " selected" : "") + '>' + esc(t("s3.team.none")) + '</option>';
+  teams.forEach(function(tm){
+    html += '<option value="' + esc(tm.name) + '"' + (tm.name && tm.name === sel ? " selected" : "") + '>' +
+            esc(tm.name || "—") + '</option>';
+  });
+  return html;
+}
+
+function renderTable(){
+  var tb = $("tbody");
+  tb.innerHTML = "";
+  if (!items.length){
+    tb.innerHTML = '<tr><td colspan="7" class="empty">' + t("s3.empty") + '</td></tr>';
+    return;
+  }
+  items.forEach(function(it, i){
+    var tr = document.createElement("tr");
+    tr.innerHTML =
+      '<td class="ord">' + (i + 1) + '</td>' +
+      '<td><input type="text" data-f="key" data-i="' + i + '" value="' + esc(it.key) + '" placeholder="' + esc(t("s3.ph.key")) + '"></td>' +
+      '<td><input type="text" data-f="summary" data-i="' + i + '" value="' + esc(it.summary) + '" placeholder="' + esc(t("s3.ph.summary")) + '"></td>' +
+      '<td><input type="number" data-f="points" data-i="' + i + '" value="' + (+it.points || 0) + '" min="0" step="0.5"></td>' +
+      '<td><select data-f="team" data-i="' + i + '">' + teamOptions(it.team) + '</select></td>' +
+      '<td><select data-f="state" data-i="' + i + '">' +
+        '<option value="none"' + (it.state === "none" ? " selected" : "") + '>' + esc(t("s3.state.none")) + '</option>' +
+        '<option value="waiting"' + (it.state === "waiting" ? " selected" : "") + '>' + esc(t("s3.state.waiting")) + '</option>' +
+        '<option value="ready"' + (it.state === "ready" ? " selected" : "") + '>' + esc(t("s3.state.ready")) + '</option>' +
+      '</select></td>' +
+      '<td><button class="del" data-del="' + i + '" aria-label="&times;">&times;</button></td>';
+    tb.appendChild(tr);
+  });
+}
+
+$("tbody").addEventListener("input", function(e){
+  var el = e.target, i = el.getAttribute("data-i"), f = el.getAttribute("data-f");
+  if (i === null || !f) return;
+  items[+i][f] = (f === "points") ? (parseFloat(el.value) || 0) : el.value;
+  updateStats();
+});
+$("tbody").addEventListener("change", function(e){
+  var el = e.target, i = el.getAttribute("data-i"), f = el.getAttribute("data-f");
+  if (i === null || !f) return;
+  items[+i][f] = el.value;
+  if (f === "team" && el.value && items[+i].state === "none") items[+i].state = "waiting";
+  if (f === "state" && el.value !== "none" && !items[+i].team && teams.length) items[+i].team = teams[0].name;
+  renderTable(); renderTeams(); runForecast();
+});
+$("tbody").addEventListener("click", function(e){
+  var d = e.target.getAttribute("data-del");
+  if (d === null) return;
+  items.splice(+d, 1);
+  renderTable(); renderTeams(); runForecast();
+});
+
+function updateStats(){
+  var p = readParams();
+  var counts = p.history.map(function(s){ return s.count; });
+  var pts = p.history.map(function(s){ return s.points; });
+  var sizes = [];
+  p.history.forEach(function(s){ sizes = sizes.concat(s.sizes); });
+  $("s-items").textContent = fmtN(r1(percentile(counts, 0.5)));
+  $("s-pts").textContent = fmtN(r1(percentile(pts, 0.5)));
+  $("s-p85").textContent = fmtN(r1(percentile(pts, 0.15)));
+  $("s-size").textContent = fmtN(r1(percentile(sizes, 0.5)));
+  $("s-deps").textContent = items.filter(function(i){ return i.state === "waiting"; }).length + " / " + items.length;
+}
+
+/* ---------- board ---------- */
+
+function renderBoard(f, p){
+  var board = $("board");
+  board.innerHTML = "";
+  if (!f){
+    board.innerHTML = '<p class="empty">' + t("s4.empty") + '</p>';
+    return;
+  }
+  var ptsHist = p.history.map(function(s){ return s.points; });
+  var p85 = percentile(ptsHist, 0.15);
+  var scaleMax = Math.max(percentile(ptsHist, 0.5), p85, 1) * 1.35;
+  var eWait = expectedWait();
+
+  for (var s = 0; s < p.horizon; s++){
+    var col = f.cols[s];
+    var pts = col.reduce(function(a, i){ return a + (+items[i].points || 0); }, 0);
+    var unlabelled = col.filter(function(i){ return items[i].state === "none"; })
+                        .reduce(function(a, i){ return a + (+items[i].points || 0); }, 0);
+    var reserve = unlabelled * p.pLate * (eWait / p.sprintLen);
+
+    var d = document.createElement("div");
+    d.className = "col";
+    d.style.setProperty("--conf", Math.round(f.joint[s] * 100) + "%");
+    var html =
+      '<h3>' + t("sprintN", { n: s + 1 }) + '</h3>' +
+      '<p class="pts">' + t("s4.conf", { p: pct(f.joint[s]) }) + '</p>' +
+      '<div class="meter">' +
+        '<i style="width:' + Math.min(100, pts / scaleMax * 100) + '%"></i>' +
+        '<b style="left:' + Math.min(100, p85 / scaleMax * 100) + '%"></b>' +
+      '</div>' +
+      '<div class="meterlab"><span>' + t("s4.meter", { pts: fmtN(r1(pts)), n: col.length }) +
+      '</span><span>P85 ' + fmtN(r1(p85)) + '</span></div>';
+
+    if (!col.length){
+      html += '<p class="empty">' + t("s4.nothing") + '</p>';
+    } else {
+      col.forEach(function(i){ html += itemHtml(i, f, p); });
+    }
+    html += '<div class="reserve">' + t("s4.reserve", { pts: fmtN(r1(reserve)) }) + '</div>';
+    d.innerHTML = html;
+    board.appendChild(d);
+  }
+
+  var beyond = [];
+  for (var i2 = 0; i2 < items.length; i2++){
+    if (f.placement[i2] < 0 || f.placement[i2] >= p.horizon) beyond.push(i2);
+  }
+  if (beyond.length){
+    var b = document.createElement("div");
+    b.className = "col beyond";
+    var bh = '<h3>' + t("s4.beyond") + '</h3><p class="pts">' + t("s4.beyond.sub", { n: p.horizon, w: nw(p.horizon, "f.sprint") }) +
+             '</p><div style="height:14px"></div>';
+    beyond.forEach(function(i){ bh += itemHtml(i, f, p); });
+    b.innerHTML = bh;
+    board.appendChild(b);
+  }
+}
+
+function itemHtml(i, f, p){
+  var it = items[i];
+  var badge = "";
+  if (it.state === "waiting"){
+    var ti = teamIndex(it.team);
+    var over = ti >= 0 && (+teams[ti].p85 || 0) > p.sprintLen;
+    badge = '<span class="tag ' + (over ? "block" : "wait") + '">' + esc(it.team || t("s4.unassigned")) + '</span>';
+  } else if (it.state === "ready"){
+    badge = '<span class="tag ready">' + esc(it.team || "dep") + ' ' + t("s4.depready") + '</span>';
+  }
+  var strip = '<div class="strip">';
+  for (var s = 0; s < Math.min(3, p.horizon); s++){
+    var v = f.cum[i][s] || 0;
+    strip += '<span title="' + t("s4.tip", { p: pct(v), n: s + 1 }) + '">' +
+             '<i style="height:' + Math.round(v * 100) + '%"></i>' +
+             '<u>' + Math.round(v * 100) + '</u></span>';
+  }
+  strip += '</div>';
+  return '<div class="item">' +
+    '<span class="k">' + esc(it.key || t("nokey")) + '</span>' +
+    '<span>' + badge + ' <span class="pts">' + (+it.points || 0) + ' ' + t("pt") + '</span></span>' +
+    (it.summary ? '<span class="s">' + esc(it.summary) + '</span>' : '') +
+    strip +
+  '</div>';
+}
+
+function renderTeamLoad(f){
+  var host = $("teamload");
+  if (!f || !teams.length){
+    host.innerHTML = '<p class="empty">' + t("s6.empty") + '</p>';
+    return;
+  }
+  var rows = teams.map(function(tm, i){
+    var known = items.filter(function(it){ return it.state === "waiting" && teamIndex(it.team) === i; })
+                     .reduce(function(a, b){ return a + (+b.points || 0); }, 0);
+    var surprise = f.surprisePts[i] || 0;
+    return { name: tm.name || "—", p85: +tm.p85 || 0, known: known, surprise: surprise, total: known + surprise };
+  });
+  var max = Math.max.apply(null, rows.map(function(r){ return r.total; }).concat([1]));
+  var html = '<p class="note" style="margin-bottom:18px">' + t("s6.note") + '</p>';
+  rows.sort(function(a, b){ return b.total - a.total; }).forEach(function(r){
+    html +=
+      '<div style="display:grid;grid-template-columns:150px minmax(0,1fr) 200px;gap:14px;align-items:center;margin-bottom:11px">' +
+        '<span style="font-size:13.5px;font-weight:600">' + esc(r.name) + '</span>' +
+        '<span style="display:flex;height:16px;border-radius:5px;overflow:hidden;box-shadow:inset 0 0 0 1px rgba(0,0,0,.16);background:#fff">' +
+          '<span style="width:' + (r.known / max * 100) + '%;background:var(--ink)"></span>' +
+          '<span style="width:' + (r.surprise / max * 100) + '%;background:var(--signal)"></span>' +
+        '</span>' +
+        '<span class="pts">' + t("s6.row", { known: fmtN(r1(r.known)), surprise: fmtN(r1(r.surprise)), p85: fmtN(r1(r.p85)) }) + '</span>' +
+      '</div>';
+  });
+  html += '<div class="legend" style="margin-top:16px">' +
+          '<span><i style="border-color:var(--ink);background:var(--ink)"></i>' + t("s6.lg.known") + '</span>' +
+          '<span><i style="border-color:var(--ink);background:var(--signal)"></i>' + t("s6.lg.late") + '</span></div>';
+  host.innerHTML = html;
+}
+
+function runForecast(){
+  var p = readParams();
+  updateStats();
+  if (!items.length){
+    lastForecast = null;
+    renderBoard(null, p); renderTeamLoad(null); renderPlan();
+    return;
+  }
+  var f = runSim(p);
+  lastForecast = { f: f, p: p };
+  renderBoard(f, p);
+  renderTeamLoad(f);
+  renderPlan();
+  $("run-hint").textContent = t("s4.runs", { runs: fmtN(p.runs), w: nw(p.runs, "f.run"), n: p.history.length });
+}
+
+/* ---------- plan view ---------- */
+
 function renderPlan(){
   var host = $("plan");
   var lateHost = $("plan-late");
   var sum = $("plan-summary");
   if (!items.length){
-    host.innerHTML = '<p class="empty">Add backlog items to build a plan.</p>';
+    host.innerHTML = '<p class="empty">' + t("s5.empty") + '</p>';
     lateHost.innerHTML = ""; sum.innerHTML = "";
     $("plan-hint").textContent = "";
     return;
@@ -1092,50 +1384,49 @@ function renderPlan(){
     return a + c.raise.filter(function(e){ return e.urgent; }).length; }, 0);
   var inScope = pn.cols.reduce(function(a, c){ return a + c.pull.length; }, 0);
   var depMissed = pn.missed.filter(function(e){ return e.reason === "dependency"; }).length;
-  var confPct = Math.round(pn.conf * 100);
+  var confPct = Math.round(pn.conf * 100) + "%";
 
   sum.innerHTML =
-    stat(inScope + " of " + items.length, "items make the target") +
-    stat(totalRaise + " requests", urgent + " must go out today") +
-    stat(pn.missed.length + " items", depMissed + " blocked by a dependency") +
-    stat(r1(pn.capPts) + " pts", "per sprint at " + confPct + "% confidence");
+    stat(t("s5.stat.scope", { a: inScope, b: items.length }), t("s5.stat.scope.k")) +
+    stat(t("s5.stat.req", { n: totalRaise, w: nw(totalRaise, "f.request") }), t("s5.stat.req.k", { n: urgent, w: nw(urgent, "f.must") })) +
+    stat(t("s5.stat.miss", { n: pn.missed.length, w: nw(pn.missed.length, "f.item") }), t("s5.stat.miss.k", { n: depMissed, w: nw(depMissed, "f.blocked") })) +
+    stat(t("s5.stat.cap", { pts: fmtN(r1(pn.capPts)) }), t("s5.stat.cap.k", { p: confPct }));
 
-  $("plan-hint").textContent = "By " + fmtDate(workingAdd(pn.targetDate, -1)) + " · " + confPct + "% confidence";
+  $("plan-hint").textContent = t("s5.hint", { date: fmtDate(workingAdd(pn.targetDate, -1)), p: confPct });
 
   var html = "";
   pn.cols.forEach(function(c){
-    var free = c.pull.filter(function(e){ return !e.team; }).length;
-    html += '<div class="col" style="--conf:' + (c.pull.length ? Math.round(free / c.pull.length * 100) : 0) + '%">' +
-      '<h3>Sprint ' + c.sprint + '</h3>' +
-      '<p class="pts">starts ' + fmtDate(c.start) + ' · ' + free + ' of ' + c.pull.length + ' free to start</p>';
-
-    html += '<div class="lane"><h4>Safe to start</h4>';
     var freeItems = c.pull.filter(function(e){ return !e.team; });
     var heldItems = c.pull.filter(function(e){ return e.team; });
-    if (!freeItems.length) html += '<p class="empty">Nothing here is dependency-free.</p>';
+    html += '<div class="col" style="--conf:' + (c.pull.length ? Math.round(freeItems.length / c.pull.length * 100) : 0) + '%">' +
+      '<h3>' + t("sprintN", { n: c.sprint }) + '</h3>' +
+      '<p class="pts">' + t("s5.colsub", { date: fmtDate(c.start), a: freeItems.length, b: c.pull.length }) + '</p>';
+
+    html += '<div class="lane"><h4>' + t("s5.lane.safe") + '</h4>';
+    if (!freeItems.length) html += '<p class="empty">' + t("s5.nofree") + '</p>';
     freeItems.forEach(function(e){
       var it = items[e.i];
-      html += '<div class="pull"><span class="k">' + esc(it.key || "(no key)") + '</span>' +
-        '<span class="pts">' + (+it.points || 0) + ' pt</span></div>';
+      html += '<div class="pull"><span class="k">' + esc(it.key || t("nokey")) + '</span>' +
+        '<span class="pts">' + (+it.points || 0) + ' ' + t("pt") + '</span></div>';
     });
     if (heldItems.length){
-      html += '<h4 style="margin-top:14px">Only if the answer is back</h4>';
+      html += '<h4 style="margin-top:14px">' + t("s5.lane.held") + '</h4>';
       heldItems.forEach(function(e){
         var it = items[e.i];
-        html += '<div class="pull" style="border-style:dashed"><span class="k">' + esc(it.key || "(no key)") + '</span>' +
-          '<span class="pts">' + esc(e.team) + ' · ' + (+it.points || 0) + ' pt</span></div>';
+        html += '<div class="pull" style="border-style:dashed"><span class="k">' + esc(it.key || t("nokey")) + '</span>' +
+          '<span class="pts">' + esc(e.team) + ' · ' + (+it.points || 0) + ' ' + t("pt") + '</span></div>';
       });
     }
     html += '</div>';
 
-    html += '<div class="lane"><h4>Raise with other teams</h4>';
-    if (!c.raise.length) html += '<p class="empty">No requests due.</p>';
+    html += '<div class="lane"><h4>' + t("s5.lane.raise") + '</h4>';
+    if (!c.raise.length) html += '<p class="empty">' + t("s5.noreq") + '</p>';
     c.raise.forEach(function(e){
       var it = items[e.i];
       html += '<div class="req">' +
-        '<span class="k">' + esc(e.team) + ' &rarr; ' + esc(it.key || "(no key)") + '</span>' +
-        '<span class="d">' + (e.urgent ? "raise today" : "raise by " + fmtDate(e.raiseBy)) +
-        ' · ' + Math.ceil(e.wait) + 'd turnaround · unblocks sprint ' + e.sprint + '</span></div>';
+        '<span class="k">' + esc(e.team) + ' &rarr; ' + esc(it.key || t("nokey")) + '</span>' +
+        '<span class="d">' + (e.urgent ? t("s5.today") : t("s5.by.date2", { date: fmtDate(e.raiseBy) })) +
+        ' · ' + t("s5.turn", { d: Math.ceil(e.wait), n: e.sprint }) + '</span></div>';
     });
     html += '</div></div>';
   });
@@ -1143,16 +1434,15 @@ function renderPlan(){
 
   var lh = "";
   if (pn.missed.length){
-    lh += '<div class="bucket"><h3>Will not make the target</h3>' +
-          '<p style="font-size:13px;color:#fff;opacity:.75;margin-bottom:12px">At ' + confPct +
-          '% confidence these fall outside ' + pn.K + ' sprint' + (pn.K > 1 ? "s" : "") +
-          '. Descope them, or move them up the backlog and push something else out.</p>';
+    lh += '<div class="bucket"><h3>' + t("s5.miss.title") + '</h3>' +
+          '<p style="font-size:13px;color:#fff;opacity:.75;margin-bottom:12px">' +
+          t("s5.miss.sub", { p: confPct, n: pn.K, w: nw(pn.K, "f.sprint") }) + '</p>';
     pn.missed.forEach(function(e){
       var it = items[e.i];
       var why = e.reason === "dependency"
-        ? esc(e.team) + " needs " + Math.ceil(e.wait) + "d — longer than the runway"
-        : "no capacity until sprint " + e.sprint;
-      lh += '<div class="row-i"><span>' + esc(it.key || "(no key)") + ' · ' + (+it.points || 0) + ' pt</span>' +
+        ? t("s5.miss.dep", { team: esc(e.team), d: Math.ceil(e.wait) })
+        : t("s5.miss.cap", { n: e.sprint });
+      lh += '<div class="row-i"><span>' + esc(it.key || t("nokey")) + ' · ' + (+it.points || 0) + ' ' + t("pt") + '</span>' +
             '<span class="why">' + why + '</span></div>';
     });
     lh += '</div>';
@@ -1161,7 +1451,7 @@ function renderPlan(){
 }
 
 function stat(v, k){
-  return '<div class="stat"><span class="v mono">' + esc(v) + '</span><span class="k">' + esc(k) + '</span></div>';
+  return '<div class="stat"><span class="v mono">' + v + '</span><span class="k">' + k + '</span></div>';
 }
 
 $("pl-mode").addEventListener("change", function(){
@@ -1227,7 +1517,7 @@ function importWorkbook(data, name){
     });
 
     var rows = XLSX.utils.sheet_to_json(wb.Sheets[backName], { header: 1, blankrows: false });
-    if (!rows.length) throw new Error("The backlog sheet is empty.");
+    if (!rows.length) throw new Error(t("err.emptysheet"));
     var headers = rows[0].map(function(h){ return h == null ? "" : h; });
     var out = [];
     for (var r = 1; r < rows.length; r++){
@@ -1236,7 +1526,7 @@ function importWorkbook(data, name){
       if (!it.key && !it.summary) continue;
       out.push(it);
     }
-    if (!out.length) throw new Error("No rows with a key or summary were found.");
+    if (!out.length) throw new Error(t("err.norows"));
     items = out;
 
     var extra = "";
@@ -1253,13 +1543,16 @@ function importWorkbook(data, name){
         });
         if (sizes.length) lines.push((label ? label + ": " : "") + sizes.join(", "));
       }
-      if (lines.length){ $("p-throughput").value = lines.join("\n"); extra = " and " + lines.length + " sprints of history"; }
+      if (lines.length){
+        $("p-throughput").value = lines.join("\n");
+        extra = t("msg.import.extra", { n: lines.length, w: nw(lines.length, "f.sprint") });
+      }
     }
 
     renderTeams(); renderTable(); runForecast();
-    msg.innerHTML = '<div class="msg">Imported <strong>' + out.length + '</strong> items' + extra + ' from ' + esc(name) + '.</div>';
+    msg.innerHTML = '<div class="msg">' + t("msg.import", { n: out.length, w: nw(out.length, "f.item"), extra: extra, name: esc(name) }) + '</div>';
   } catch (err){
-    msg.innerHTML = '<div class="msg bad">Could not read that file: ' + esc(err.message) + '</div>';
+    msg.innerHTML = '<div class="msg bad">' + t("msg.import.bad", { err: esc(err.message) }) + '</div>';
   }
 }
 
@@ -1267,7 +1560,7 @@ function readFile(file){
   if (!file) return;
   var reader = new FileReader();
   reader.onload = function(e){ importWorkbook(new Uint8Array(e.target.result), file.name); };
-  reader.onerror = function(){ $("import-msg").innerHTML = '<div class="msg bad">The file could not be read.</div>'; };
+  reader.onerror = function(){ $("import-msg").innerHTML = '<div class="msg bad">' + t("msg.read.bad") + '</div>'; };
   reader.readAsArrayBuffer(file);
 }
 
@@ -1286,26 +1579,20 @@ drop.addEventListener("drop", function(e){
 });
 
 $("btn-tmpl").addEventListener("click", function(){
-  var backlog = [
-    ["Key","Summary","Story Points","Depends On Team","Labels","State"],
+  var backlog = [ t("tmpl.hdr") ].concat([
     ["PAY-104","Card tokenisation swap",5,"Security","dependency","waiting"],
     ["AUTH-12","Session expiry banner",3,"","",""],
     ["BIL-3","Invoice PDF rewrite",8,"UX","blocked-by","waiting"],
     ["REP-7","Weekly usage report",5,"","",""]
-  ];
-  var hist = [
-    ["S-20",2,3,5,5,3,2],
-    ["S-21",5,5,8,3],
-    ["S-22",3,2,3,5,5,3],
-    ["S-23",8,5,3]
-  ];
+  ]);
+  var hist = [["S-20",2,3,5,5,3,2],["S-21",5,5,8,3],["S-22",3,2,3,5,5,3],["S-23",8,5,3]];
   var wb = XLSX.utils.book_new();
   var ws1 = XLSX.utils.aoa_to_sheet(backlog);
   ws1["!cols"] = [{wch:12},{wch:34},{wch:13},{wch:18},{wch:14},{wch:10}];
-  XLSX.utils.book_append_sheet(wb, ws1, "Backlog");
-  var ws2 = XLSX.utils.aoa_to_sheet([["Sprint","Size of each completed item →"]].concat(hist));
+  XLSX.utils.book_append_sheet(wb, ws1, t("tmpl.sheet1"));
+  var ws2 = XLSX.utils.aoa_to_sheet([[t("tmpl.sprint"), t("tmpl.sizes")]].concat(hist));
   ws2["!cols"] = [{wch:10}];
-  XLSX.utils.book_append_sheet(wb, ws2, "Throughput");
+  XLSX.utils.book_append_sheet(wb, ws2, t("tmpl.sheet2"));
   XLSX.writeFile(wb, "backlog-template.xlsx");
 });
 
@@ -1316,7 +1603,10 @@ $("btn-savejson").addEventListener("click", function(){
       sprintLength: +$("p-sprintlen").value,
       lateDiscoveryPct: +$("p-late").value,
       horizon: +$("p-horizon").value,
-      runs: +$("p-runs").value
+      runs: +$("p-runs").value,
+      basis: $("p-basis").value,
+      backfill: $("p-backfill").value,
+      language: LANG
     },
     teams: teams,
     items: items
@@ -1338,17 +1628,20 @@ $("jsonfile").addEventListener("change", function(e){
         $("p-late").value = d.parameters.lateDiscoveryPct || 0;
         $("p-horizon").value = d.parameters.horizon || 3;
         $("p-runs").value = d.parameters.runs || 3000;
+        if (d.parameters.basis) $("p-basis").value = d.parameters.basis;
+        if (d.parameters.backfill !== undefined) $("p-backfill").value = String(d.parameters.backfill);
+        if (d.parameters.language && STR[d.parameters.language]){ LANG = d.parameters.language; applyLang(); }
       }
-      if (Array.isArray(d.teams)) teams = d.teams.map(function(t){
-        return { name: t.name || "", p85: +t.p85 || 0 };
+      if (Array.isArray(d.teams)) teams = d.teams.map(function(tm){
+        return { name: tm.name || "", p85: +tm.p85 || 0 };
       });
       if (Array.isArray(d.items)) items = d.items.map(function(i){
         return { key:i.key||"", summary:i.summary||"", points:+i.points||0, team:i.team||"", state:i.state||"none" };
       });
       renderTeams(); renderTable(); runForecast();
-      $("import-msg").innerHTML = '<div class="msg">Setup restored.</div>';
+      $("import-msg").innerHTML = '<div class="msg">' + t("msg.restored") + '</div>';
     } catch (err){
-      $("import-msg").innerHTML = '<div class="msg bad">That is not a valid setup file.</div>';
+      $("import-msg").innerHTML = '<div class="msg bad">' + t("msg.json.bad") + '</div>';
     }
   };
   reader.readAsText(file);
@@ -1396,35 +1689,38 @@ $("btn-run").addEventListener("click", runForecast);
   $(id).addEventListener("change", function(){ renderTeams(); runForecast(); });
 });
 
+var langButtons = document.querySelectorAll("[data-lang]");
+for (var lb = 0; lb < langButtons.length; lb++){
+  langButtons[lb].addEventListener("click", function(){ setLang(this.getAttribute("data-lang")); });
+}
+
 /* ---------- demo data ---------- */
 
-var demoTeams = [
-  { name:"Security", p85:14 },
-  { name:"UX", p85:6 },
-  { name:"Platform", p85:9 },
-  { name:"Data", p85:18 }
-];
+var demoTeams = { en: ["Security","UX","Platform","Data"], pl: ["Bezpieczeństwo","UX","Platforma","Dane"] };
+var demoP85 = [14, 6, 9, 18];
 var demoItems = [
-  ["AUTH-12","Session expiry banner",3,"","none"],
-  ["PAY-104","Card tokenisation swap",5,"Security","waiting"],
-  ["REP-7","Weekly usage report",5,"","none"],
-  ["BIL-3","Invoice PDF rewrite",8,"UX","waiting"],
-  ["NOT-9","Digest email opt-out",2,"","none"],
-  ["SEA-2","Faceted search filters",8,"UX","waiting"],
-  ["PLAT-31","Vault client upgrade",5,"Platform","ready"],
-  ["PAY-110","Refund reconciliation",5,"","none"],
-  ["ADM-4","Bulk user import",3,"","none"],
-  ["ADM-5","Role audit log",3,"Security","waiting"],
-  ["MOB-1","Offline draft sync",8,"","none"],
-  ["MOB-2","Push token rotation",5,"Platform","waiting"],
-  ["DAT-8","Event schema v2",8,"Data","waiting"],
-  ["FIN-9","Tax rules table",5,"","none"],
-  ["SEA-5","Search relevance tuning",5,"Data","waiting"]
+  ["AUTH-12", 3, -1, "none",    "Session expiry banner",     "Baner wygaśnięcia sesji"],
+  ["PAY-104", 5,  0, "waiting", "Card tokenisation swap",    "Wymiana tokenizacji kart"],
+  ["REP-7",   5, -1, "none",    "Weekly usage report",       "Tygodniowy raport użycia"],
+  ["BIL-3",   8,  1, "waiting", "Invoice PDF rewrite",       "Przebudowa faktur PDF"],
+  ["NOT-9",   2, -1, "none",    "Digest email opt-out",      "Rezygnacja z podsumowań"],
+  ["SEA-2",   8,  1, "waiting", "Faceted search filters",    "Filtry wyszukiwania"],
+  ["PLAT-31", 5,  2, "ready",   "Vault client upgrade",      "Aktualizacja klienta Vault"],
+  ["PAY-110", 5, -1, "none",    "Refund reconciliation",     "Uzgadnianie zwrotów"],
+  ["ADM-4",   3, -1, "none",    "Bulk user import",          "Masowy import użytkowników"],
+  ["ADM-5",   3,  0, "waiting", "Role audit log",            "Dziennik audytu ról"],
+  ["MOB-1",   8, -1, "none",    "Offline draft sync",        "Synchronizacja szkiców offline"],
+  ["MOB-2",   5,  2, "waiting", "Push token rotation",       "Rotacja tokenów push"],
+  ["DAT-8",   8,  3, "waiting", "Event schema v2",           "Schemat zdarzeń v2"],
+  ["FIN-9",   5, -1, "none",    "Tax rules table",           "Tabela reguł podatkowych"],
+  ["SEA-5",   5,  3, "waiting", "Search relevance tuning",   "Strojenie trafności wyszukiwania"]
 ];
 function loadDemo(){
-  teams = demoTeams.map(function(t){ return { name:t.name, p85:t.p85 }; });
+  var names = demoTeams[LANG] || demoTeams.en;
+  teams = names.map(function(n, i){ return { name: n, p85: demoP85[i] }; });
   items = demoItems.map(function(r){
-    return { key:r[0], summary:r[1], points:r[2], team:r[3], state:r[4] };
+    return { key: r[0], points: r[1], team: r[2] >= 0 ? names[r[2]] : "", state: r[3],
+             summary: LANG === "pl" ? r[5] : r[4] };
   });
 }
 $("btn-demo").addEventListener("click", function(){
@@ -1434,10 +1730,11 @@ $("btn-demo").addEventListener("click", function(){
 });
 
 /* ---------- start ---------- */
+applyLang();
 (function seedDates(){
-  var t = todayMidnight();
-  $("pl-start").value = toISO(t);
-  $("pl-date").value = toISO(workingAdd(t, 30));
+  var d = todayMidnight();
+  $("pl-start").value = toISO(d);
+  $("pl-date").value = toISO(workingAdd(d, 30));
 })();
 loadDemo();
 renderTeams();
