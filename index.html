@@ -6,122 +6,171 @@
 <title>Sprint dependency forecast</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
 :root{
-  --ink:#16211D;
-  --ink-2:#4B5A54;
-  --ink-3:#7C8B84;
-  --paper:#EDF0EC;
+  --ink:#17181A;
+  --ink-2:#56585C;
+  --ink-3:#8C8F94;
+  --paper:#F4F4F1;
   --panel:#FFFFFF;
-  --rule:#CBD4CE;
-  --rule-2:#A9B6AF;
-  --plot:#0B6E70;
-  --plot-soft:#DCEBEA;
-  --wait:#9A5B12;
-  --wait-soft:#F6E9D6;
-  --block:#98332F;
-  --block-soft:#F7E2E0;
-  --grid:#E3E8E3;
+  --rule:#E8E7E2;
+  --rule-2:#D4D3CC;
+  --grid:#F0EFEA;
+  --plot:#E2452F;
+  --plot-soft:#FCEAE6;
+  --go:#12855C;
+  --go-soft:#E3F3EC;
+  --wait:#A96206;
+  --wait-soft:#FBEEDC;
+  --block:#C4381F;
+  --block-soft:#FBE7E2;
+  --r:14px;
+  --shadow:0 1px 2px rgba(23,24,26,.05), 0 8px 26px -14px rgba(23,24,26,.22);
 }
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
 body{
   background:var(--paper);
   color:var(--ink);
-  font-family:"IBM Plex Sans",system-ui,sans-serif;
+  font-family:"Poppins",system-ui,sans-serif;
   font-size:15px;
-  line-height:1.55;
+  font-weight:400;
+  line-height:1.65;
   -webkit-font-smoothing:antialiased;
 }
 .wrap{max-width:1180px;margin:0 auto;padding:0 24px 96px}
-h1,h2,h3{font-family:"Space Grotesk",sans-serif;font-weight:700;letter-spacing:-0.01em;margin:0}
-h1{font-size:30px;line-height:1.15}
-h2{font-size:19px;font-weight:500}
-h3{font-size:14px;font-weight:500}
+h1,h2,h3{font-family:"Poppins",sans-serif;margin:0;letter-spacing:-0.02em}
+h1{font-size:38px;font-weight:600;line-height:1.18}
+h2{font-size:20px;font-weight:600}
+h3{font-size:16px;font-weight:600}
 p{margin:0}
-.mono{font-family:"IBM Plex Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums}
-.eyebrow{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
-header{border-bottom:1px solid var(--rule);padding:34px 0 22px;margin-bottom:28px}
-header .sub{color:var(--ink-2);max-width:62ch;margin-top:10px;font-size:14.5px}
-section{margin-bottom:36px}
-.sechead{display:flex;align-items:baseline;gap:14px;border-bottom:1px solid var(--rule);padding-bottom:8px;margin-bottom:18px;flex-wrap:wrap}
-.sechead .hint{color:var(--ink-3);font-size:13px;margin-left:auto}
-.panel{background:var(--panel);border:1px solid var(--rule);padding:18px 20px}
-.grid-params{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:18px 22px}
+.mono{font-variant-numeric:tabular-nums;letter-spacing:.01em}
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--plot)}
+
+header{padding:44px 0 30px;margin-bottom:34px}
+.brand{display:flex;align-items:center;gap:9px;margin-bottom:20px}
+.brand span{font-size:13px;font-weight:600;letter-spacing:.02em;color:var(--ink-2)}
+.shuriken{width:20px;height:20px;color:var(--plot);flex:none}
+@media (prefers-reduced-motion:no-preference){
+  .brand:hover .shuriken{animation:spin 1.4s cubic-bezier(.5,0,.2,1)}
+  @keyframes spin{to{transform:rotate(360deg)}}
+}
+header h1{max-width:20ch;margin-top:8px}
+header .sub{color:var(--ink-2);max-width:64ch;margin-top:16px;font-size:15px;font-weight:300}
+header .rule{width:56px;height:4px;background:var(--plot);border-radius:2px;margin-top:26px}
+
+section{margin-bottom:44px}
+.sechead{display:flex;align-items:center;gap:14px;margin-bottom:20px;flex-wrap:wrap}
+.sechead h2{display:flex;align-items:center;gap:13px}
+.num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;
+  border-radius:50%;background:var(--plot);color:#fff;font-size:13px;font-weight:600;flex:none;letter-spacing:0}
+.sechead .hint{color:var(--ink-3);font-size:13px;font-weight:300;margin-left:auto}
+.panel{background:var(--panel);border:1px solid var(--rule);border-radius:20px;padding:26px 28px;box-shadow:var(--shadow)}
+
+.grid-params{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px 24px}
 label{display:block}
-.lab{font-size:12.5px;color:var(--ink-2);margin-bottom:5px;display:flex;gap:6px;align-items:baseline}
-.lab em{font-style:normal;color:var(--ink-3);font-size:11.5px}
+.lab{font-size:12px;font-weight:600;letter-spacing:.02em;color:var(--ink);margin-bottom:7px;display:flex;gap:6px;align-items:baseline}
+.lab em{font-style:normal;color:var(--ink-3);font-size:11.5px;font-weight:400}
 input[type=text],input[type=number],select,textarea{
-  width:100%;font:inherit;font-size:14px;padding:7px 9px;
-  background:#fff;color:var(--ink);border:1px solid var(--rule-2);border-radius:0;
+  width:100%;font-family:inherit;font-size:14px;font-weight:400;padding:10px 13px;
+  background:#fff;color:var(--ink);border:1px solid var(--rule-2);border-radius:10px;
+  transition:border-color .15s ease, box-shadow .15s ease;
 }
-input[type=text],input[type=number]{font-family:"IBM Plex Mono",monospace}
-input:focus-visible,select:focus-visible,button:focus-visible,textarea:focus-visible{outline:2px solid var(--plot);outline-offset:1px}
+input:hover,select:hover{border-color:var(--ink-3)}
+input:focus,select:focus,textarea:focus{border-color:var(--plot);box-shadow:0 0 0 3px var(--plot-soft);outline:none}
+input:focus-visible,select:focus-visible,textarea:focus-visible{outline:none}
+button:focus-visible{outline:2px solid var(--plot);outline-offset:2px}
+
 button{
-  font:inherit;font-size:13.5px;padding:7px 14px;cursor:pointer;
-  background:#fff;color:var(--ink);border:1px solid var(--rule-2);border-radius:0;
+  font-family:inherit;font-size:13.5px;font-weight:500;padding:9px 18px;cursor:pointer;
+  background:#fff;color:var(--ink);border:1px solid var(--rule-2);border-radius:999px;
+  transition:background .15s ease,border-color .15s ease,color .15s ease,transform .1s ease;
 }
-button:hover{background:var(--plot-soft);border-color:var(--plot)}
-button.primary{background:var(--ink);color:#fff;border-color:var(--ink);font-weight:500}
-button.primary:hover{background:var(--plot);border-color:var(--plot)}
-button.ghost{border-color:var(--rule)}
+button:hover{background:var(--plot-soft);border-color:var(--plot);color:var(--plot)}
+button:active{transform:translateY(1px)}
+button.primary{background:var(--ink);color:#fff;border-color:var(--ink);font-weight:600;padding:11px 26px}
+button.primary:hover{background:var(--plot);border-color:var(--plot);color:#fff}
+button.ghost{border-color:var(--rule);color:var(--ink-2)}
+
 .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-.stat{border-left:2px solid var(--plot);padding-left:11px}
-.stat .v{font-family:"Space Grotesk",sans-serif;font-size:23px;font-weight:700;line-height:1.1}
-.stat .k{font-size:12px;color:var(--ink-2)}
-table{width:100%;border-collapse:collapse}
+.stat{background:var(--paper);border-radius:12px;padding:12px 16px;min-width:150px}
+.stat .v{display:block;font-size:26px;font-weight:600;line-height:1.2;letter-spacing:-0.02em}
+.stat .k{font-size:12px;font-weight:300;color:var(--ink-2);line-height:1.4}
+
+table{width:100%;border-collapse:separate;border-spacing:0}
 th{
-  font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
-  color:var(--ink-3);text-align:left;font-weight:400;padding:0 8px 7px;border-bottom:1px solid var(--rule)
+  font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;
+  color:var(--ink-3);text-align:left;padding:0 8px 10px;
 }
-td{padding:4px 8px;border-bottom:1px solid var(--grid);vertical-align:middle}
-td input,td select{padding:5px 7px;font-size:13.5px;border-color:var(--rule)}
-tr.warn td{background:#FDF7F6}
-.ord{font-family:"IBM Plex Mono",monospace;color:var(--ink-3);font-size:12px;width:26px}
-.del{border:none;background:none;color:var(--ink-3);padding:4px 6px;line-height:1}
-.del:hover{background:var(--block-soft);color:var(--block)}
-.board{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;align-items:start}
-.col{background:var(--panel);border:1px solid var(--rule);padding:14px}
-.col.beyond{background:transparent;border-style:dashed}
-.col h3{font-family:"Space Grotesk",sans-serif;font-size:15px;font-weight:700}
-.meter{height:7px;background:var(--grid);position:relative;margin:9px 0 4px}
-.meter i{position:absolute;left:0;top:0;bottom:0;background:var(--plot);display:block}
-.meter b{position:absolute;top:-3px;bottom:-3px;width:1px;background:var(--ink)}
-.meterlab{display:flex;justify-content:space-between;font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--ink-3);margin-bottom:12px}
-.item{border-top:1px solid var(--grid);padding:8px 0 7px;display:grid;grid-template-columns:1fr auto;gap:3px 8px}
-.item:first-of-type{border-top:none}
-.item .k{font-family:"IBM Plex Mono",monospace;font-size:13px;font-weight:500}
-.item .s{font-size:12px;color:var(--ink-2);grid-column:1/-1;margin-top:-2px}
-.pts{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink-3)}
-.tag{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;padding:2px 5px;border:1px solid}
-.tag.wait{color:var(--wait);border-color:var(--wait);background:var(--wait-soft)}
-.tag.ready{color:var(--plot);border-color:var(--plot);background:var(--plot-soft)}
-.tag.block{color:var(--block);border-color:var(--block);background:var(--block-soft)}
-.strip{display:flex;gap:2px;grid-column:1/-1;margin-top:4px}
-.strip span{flex:1;height:12px;background:var(--grid);position:relative;overflow:hidden}
-.strip span i{position:absolute;left:0;bottom:0;right:0;background:var(--plot);display:block}
-.strip span u{position:absolute;inset:0;font-family:"IBM Plex Mono",monospace;font-size:9px;text-decoration:none;
-  display:flex;align-items:center;justify-content:center;color:var(--ink);mix-blend-mode:luminosity}
-.reserve{border:1px dashed var(--rule-2);padding:7px 9px;margin-top:12px;font-size:12px;color:var(--ink-2)}
-.empty{color:var(--ink-3);font-size:13px;padding:10px 0}
-.legend{display:flex;gap:18px;flex-wrap:wrap;font-size:12px;color:var(--ink-2);margin-top:16px}
-.legend i{display:inline-block;width:10px;height:10px;border:1px solid;vertical-align:-1px;margin-right:5px}
-.note{font-size:13px;color:var(--ink-2);max-width:78ch}
-.drop{border:1px dashed var(--rule-2);padding:16px;text-align:center;color:var(--ink-2);font-size:13.5px;background:#fff}
+td{padding:5px 8px;border-top:1px solid var(--grid);vertical-align:middle}
+td input,td select{padding:8px 11px;font-size:13.5px;border-radius:9px;border-color:var(--rule)}
+tr.warn td{background:var(--block-soft)}
+.ord{color:var(--ink-3);font-size:12px;width:30px;font-weight:500}
+.del{border:none;background:none;color:var(--ink-3);padding:6px 9px;line-height:1;font-size:17px;border-radius:50%}
+.del:hover{background:var(--block-soft);color:var(--block);border:none}
+
+.board{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;align-items:start}
+.col{background:var(--panel);border:1px solid var(--rule);border-radius:18px;padding:20px;box-shadow:var(--shadow);overflow:hidden;position:relative}
+.col::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:var(--bar,var(--ink))}
+.col.beyond{background:transparent;border-style:dashed;box-shadow:none}
+.col.beyond::before{display:none}
+.col h3{letter-spacing:-0.01em}
+
+.meter{height:9px;background:var(--grid);border-radius:999px;position:relative;margin:12px 0 6px;overflow:visible}
+.meter i{position:absolute;left:0;top:0;bottom:0;background:var(--plot);border-radius:999px;display:block}
+.meter b{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--ink);border-radius:2px}
+.meterlab{display:flex;justify-content:space-between;font-size:11px;font-weight:400;color:var(--ink-3);margin-bottom:16px}
+
+.item{background:var(--paper);border-radius:12px;padding:11px 13px;margin-bottom:9px;
+  display:grid;grid-template-columns:1fr auto;gap:3px 8px;align-items:baseline}
+.item .k{font-size:13.5px;font-weight:600;letter-spacing:.01em}
+.item .s{font-size:12px;font-weight:300;color:var(--ink-2);grid-column:1/-1;line-height:1.45}
+.pts{font-size:12px;font-weight:500;color:var(--ink-3)}
+.tag{display:inline-block;font-size:9.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  padding:3px 9px;border-radius:999px;border:1px solid}
+.tag.wait{color:var(--wait);border-color:transparent;background:var(--wait-soft)}
+.tag.ready{color:var(--go);border-color:transparent;background:var(--go-soft)}
+.tag.block{color:#fff;border-color:var(--block);background:var(--block)}
+
+.strip{display:flex;gap:3px;grid-column:1/-1;margin-top:9px}
+.strip span{flex:1;height:16px;background:#fff;border-radius:5px;position:relative;overflow:hidden}
+.strip span i{position:absolute;left:0;bottom:0;right:0;background:var(--plot-soft);display:block}
+.strip span u{position:absolute;inset:0;font-size:9.5px;font-weight:600;text-decoration:none;
+  display:flex;align-items:center;justify-content:center;color:var(--ink-2)}
+
+.reserve{border:1px dashed var(--rule-2);border-radius:12px;padding:11px 13px;margin-top:14px;
+  font-size:12px;font-weight:300;color:var(--ink-2);line-height:1.5}
+.reserve strong{font-weight:600;color:var(--ink)}
+.empty{color:var(--ink-3);font-size:13px;font-weight:300;padding:12px 0}
+
+.legend{display:flex;gap:20px;flex-wrap:wrap;font-size:12px;font-weight:300;color:var(--ink-2);margin-top:20px}
+.legend i{display:inline-block;width:11px;height:11px;border-radius:4px;border:1px solid;vertical-align:-1px;margin-right:6px}
+.note{font-size:14px;font-weight:300;color:var(--ink-2);max-width:80ch;line-height:1.7}
+.note strong{font-weight:600;color:var(--ink)}
+
+.drop{border:2px dashed var(--rule-2);border-radius:16px;padding:22px;text-align:center;
+  color:var(--ink-2);font-size:13.5px;font-weight:300;background:var(--paper);transition:all .15s ease}
+.drop strong{font-weight:600;color:var(--ink)}
 .drop.over{border-color:var(--plot);background:var(--plot-soft)}
-.msg{font-size:13px;padding:8px 10px;margin-top:10px;border-left:2px solid var(--plot);background:var(--plot-soft)}
-.msg.bad{border-color:var(--block);background:var(--block-soft)}
-details summary{cursor:pointer;font-size:13px;color:var(--ink-2);padding:6px 0}
+.msg{font-size:13px;padding:11px 15px;margin-top:12px;border-radius:10px;background:var(--go-soft);color:var(--go);font-weight:400}
+.msg.bad{background:var(--block-soft);color:var(--block)}
+details summary{cursor:pointer;font-size:13px;font-weight:500;color:var(--plot);padding:8px 0;list-style:none}
+details summary::-webkit-details-marker{display:none}
+details summary::before{content:"+ ";font-weight:600}
+details[open] summary::before{content:"– "}
 .tblwrap{overflow-x:auto}
+.foot{font-size:12px;font-weight:300;color:var(--ink-3)}
+
 @media (max-width:640px){
-  .wrap{padding:0 14px 60px}
-  h1{font-size:24px}
+  .wrap{padding:0 16px 60px}
+  h1{font-size:28px}
+  .panel{padding:20px;border-radius:16px}
   th:nth-child(3),td:nth-child(3){display:none}
 }
 @media (prefers-reduced-motion:no-preference){
-  .meter i,.strip span i{transition:width .25s ease,height .25s ease}
+  .meter i,.strip span i{transition:width .3s cubic-bezier(.4,0,.2,1),height .3s cubic-bezier(.4,0,.2,1)}
 }
 </style>
 </head>
@@ -129,14 +178,22 @@ details summary{cursor:pointer;font-size:13px;color:var(--ink-2);padding:6px 0}
 <div class="wrap">
 
 <header>
-  <p class="eyebrow">Delivery forecast</p>
+  <div class="brand">
+    <svg class="shuriken" viewBox="0 0 24 24" aria-hidden="true">
+      <path fill="currentColor" d="M12 1.4l2.6 7.99L22.6 12l-8 2.61L12 22.6l-2.6-8.0L1.4 12l8-2.61z"/>
+      <circle cx="12" cy="12" r="2.1" fill="var(--paper)"/>
+    </svg>
+    <span>Lean Agile Ninja</span>
+  </div>
+  <p class="eyebrow">Flow forecasting</p>
   <h1>Dependency-aware sprint forecast</h1>
+  <div class="rule"></div>
   <p class="sub">Feed it your throughput history and a backlog. It runs a Monte Carlo simulation over your dependency-discovery rate and delay length, then shows where each item is likely to land across the next few sprints — and how much capacity you should be holding back for dependencies nobody has found yet.</p>
 </header>
 
 <section>
   <div class="sechead">
-    <h2>1 &nbsp;Parameters</h2>
+    <h2><span class="num">1</span>Parameters</h2>
     <span class="hint">Values come from what your organisation already tracks</span>
   </div>
   <div class="panel">
@@ -177,7 +234,7 @@ details summary{cursor:pointer;font-size:13px;color:var(--ink-2);padding:6px 0}
 
 <section>
   <div class="sechead">
-    <h2>2 &nbsp;Backlog</h2>
+    <h2><span class="num">2</span>Backlog</h2>
     <span class="hint">Top of the list is highest priority — order drives allocation</span>
   </div>
   <div class="panel">
@@ -232,7 +289,7 @@ details summary{cursor:pointer;font-size:13px;color:var(--ink-2);padding:6px 0}
 
 <section>
   <div class="sechead">
-    <h2>3 &nbsp;Forecast</h2>
+    <h2><span class="num">3</span>Forecast</h2>
     <span class="hint" id="run-hint">Recalculates on every change</span>
   </div>
   <div class="row" style="margin-bottom:16px">
@@ -241,10 +298,10 @@ details summary{cursor:pointer;font-size:13px;color:var(--ink-2);padding:6px 0}
   </div>
   <div class="board" id="board"></div>
   <div class="legend">
-    <span><i style="border-color:var(--rule-2);background:#fff"></i>no known dependency</span>
-    <span><i style="border-color:var(--wait);background:var(--wait-soft)"></i>known dependency, waiting</span>
-    <span><i style="border-color:var(--plot);background:var(--plot-soft)"></i>known dependency, ready</span>
-    <span><i style="border-color:var(--block);background:var(--block-soft)"></i>predecessor not scheduled earlier</span>
+    <span><i style="border-color:var(--rule-2);background:var(--paper)"></i>no known dependency</span>
+    <span><i style="border-color:transparent;background:var(--wait-soft)"></i>known dependency, waiting</span>
+    <span><i style="border-color:var(--go);background:var(--go-soft)"></i>known dependency, ready</span>
+    <span><i style="border-color:var(--block);background:var(--block)"></i>predecessor not scheduled earlier</span>
     <span><i style="border-color:var(--ink);background:var(--ink)"></i>P85 capacity mark on the meter</span>
   </div>
   <p class="note" style="margin-top:16px">
@@ -255,7 +312,7 @@ details summary{cursor:pointer;font-size:13px;color:var(--ink-2);padding:6px 0}
 </section>
 
 <section>
-  <div class="sechead"><h2>4 &nbsp;Method</h2></div>
+  <div class="sechead"><h2><span class="num">4</span>Method</h2></div>
   <div class="panel">
     <p class="note">
       Each run samples a sprint capacity from your throughput history (bootstrap, with replacement) rather than using an average,
@@ -276,7 +333,7 @@ details summary{cursor:pointer;font-size:13px;color:var(--ink-2);padding:6px 0}
   </div>
 </section>
 
-<p class="note" style="color:var(--ink-3);font-size:12px">
+<p class="foot">
   Runs entirely in your browser. Nothing is uploaded anywhere.
 </p>
 
@@ -515,6 +572,8 @@ function renderBoard(f, p){
 
     var d = document.createElement("div");
     d.className = "col";
+    var conf = f.joint[s];
+    d.style.setProperty("--bar", conf >= 0.7 ? "var(--go)" : (conf >= 0.4 ? "#D9A441" : "var(--block)"));
     var html =
       '<h3>Sprint ' + (s + 1) + '</h3>' +
       '<p class="pts">' + pct(f.joint[s]) + ' confidence everything through here has landed</p>' +
