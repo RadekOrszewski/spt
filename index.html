@@ -148,6 +148,32 @@ tr.warn td{background:var(--signal-soft)}
 .strip span u{position:absolute;inset:0;font-size:10px;font-weight:600;text-decoration:none;
   display:flex;align-items:center;justify-content:center;color:var(--ink)}
 
+.lane{margin-top:16px}
+.lane h4{font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin:0 0 9px}
+.req{background:var(--signal);border:1px solid var(--ink);border-radius:10px;padding:9px 11px;margin-bottom:8px}
+.req .k{display:block;font-size:13px;font-weight:600;line-height:1.35}
+.req .d{display:block;font-size:11.5px;font-weight:400;color:var(--ink)}
+.pull{background:#fff;border:1px solid var(--ink-3);border-radius:10px;padding:9px 11px;margin-bottom:8px;
+  display:flex;justify-content:space-between;align-items:center;gap:8px}
+.pull .k{font-size:13px;font-weight:600}
+.bucket{background:var(--ink);color:#fff;border-radius:16px;padding:20px 24px;margin-top:16px}
+.bucket h3{color:var(--signal);margin-bottom:6px}
+.bucket .row-i{display:flex;justify-content:space-between;gap:14px;padding:8px 0;border-top:1px solid rgba(255,255,255,.18);font-size:13px}
+.bucket .row-i:first-of-type{border-top:none}
+.bucket .why{color:var(--signal);font-weight:500}
+.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:20px}
+.handoff{background:var(--panel);border:1px solid var(--rule);border-radius:18px;padding:22px 24px;margin-top:16px;box-shadow:var(--shadow)}
+.hgrid{display:grid;grid-template-columns:minmax(120px,190px) minmax(0,1fr);gap:10px 16px;align-items:center}
+.hlabel .k{display:block;font-size:13px;font-weight:600;line-height:1.3}
+.hlabel .t{display:block;font-size:11.5px;color:var(--ink-2)}
+.hcells{display:grid;gap:5px}
+.hcell{height:28px;border-radius:7px;background:#fff;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12);
+  display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:600;color:var(--ink-3)}
+.hcell.wait{background:var(--signal);box-shadow:inset 0 0 0 1px rgba(0,0,0,.28);color:var(--ink)}
+.hcell.ask{background:var(--ink);color:var(--signal);box-shadow:none}
+.hcell.work{background:#fff;box-shadow:inset 0 0 0 2px var(--ink);color:var(--ink)}
+.hhead{font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);text-align:center;font-weight:600}
+.hsum{font-size:11.5px;color:var(--ink-2);margin-top:3px}
 .reserve{border:1px dashed var(--ink);border-radius:12px;padding:11px 13px;margin-top:14px;background:var(--signal-soft);
   font-size:12px;font-weight:300;color:var(--ink-2);line-height:1.5}
 .reserve strong{font-weight:600;color:var(--ink)}
@@ -259,7 +285,7 @@ S-23: 8, 5, 3</textarea>
         </select>
       </label>
       <label>
-        <span class="lab"><span data-i18n="s1.backfill"></span></span>
+        <span class="lab"><span data-i18n="s1.backfill"></span> <em data-i18n="s1.backfill.em"></em></span>
         <select id="p-backfill">
           <option value="1" selected data-i18n="s1.backfill.yes"></option>
           <option value="0" data-i18n="s1.backfill.no"></option>
@@ -274,6 +300,7 @@ S-23: 8, 5, 3</textarea>
       <div class="stat"><span class="v mono" id="s-deps">—</span><span class="k" data-i18n="s1.stat.deps"></span></div>
     </div>
     <p class="note" style="margin-top:18px;font-size:13px" data-i18n="s1.note"></p>
+    <p class="note" style="margin-top:10px;font-size:13px" data-i18n="s1.note2"></p>
   </div>
 </section>
 
@@ -408,6 +435,7 @@ S-23: 8, 5, 3</textarea>
     <p class="note" style="margin-top:18px;font-size:13px" data-i18n="s5.note"></p>
   </div>
   <div class="board" id="plan" style="margin-top:16px"></div>
+  <div id="plan-handoff"></div>
   <div id="plan-late"></div>
 </section>
 
@@ -452,8 +480,9 @@ var STR = {
     "s1.runs": "Simulation runs",
     "s1.basis": "Capacity ceiling", "s1.basis.em": "what limits a sprint",
     "s1.basis.both": "Points and item count", "s1.basis.points": "Points only", "s1.basis.items": "Item count only",
-    "s1.backfill": "When an item doesn't fit",
-    "s1.backfill.yes": "Pull the next one that does", "s1.backfill.no": "Stop the sprint there",
+    "s1.backfill": "Priority vs filling the sprint", "s1.backfill.em": "when the next item is too big for what's left",
+    "s1.backfill.yes": "Fill the gap with a smaller item", "s1.backfill.no": "Keep strict priority, leave the gap",
+    "s1.note2": "That second setting matters more than it looks. Filling the gap is what most teams actually do, and it matches the history you pasted above. Keeping strict priority means one large item at the top of the backlog blocks everything behind it — which forecasts a team slower than yours has ever been.",
     "s1.stat.items": "Items / sprint · P50",
     "s1.stat.pts": "Points / sprint · P50",
     "s1.stat.p85": "Points / sprint at 85% confidence",
@@ -525,6 +554,14 @@ var STR = {
     "s5.noreq": "No requests due.",
     "s5.today": "raise today", "s5.by.date2": "raise by {date}",
     "s5.turn": "{d}d turnaround · unblocks sprint {n}",
+    "sprintShort": "S{n}",
+    "s5.held.req": "requested in sprint {n}",
+    "s5.hand.title": "Dependency handoffs",
+    "s5.hand.note": "One row per cross-team dependency: the sprint the request has to go out in, how long you wait, and the sprint work can actually start. A wait longer than your timebox always splits across sprints — that is the case worth naming out loud in planning.",
+    "s5.hand.none": "No cross-team dependencies inside the target.",
+    "s5.hand.ask": "ask", "s5.hand.wait": "waiting", "s5.hand.start": "start", "s5.hand.same": "ask · start",
+    "s5.hand.summary": "raise in {a}, start in {b} · {d}d wait",
+    "s5.hand.summary1": "raise and start in {a} · {d}d wait",
     "s5.miss.title": "Will not make the target",
     "s5.miss.sub": "At {p} confidence these fall outside {n} {w}. Descope them, or move them up the backlog and push something else out.",
     "s5.miss.dep": "{team} needs {d}d — longer than the runway",
@@ -583,8 +620,9 @@ var STR = {
     "s1.runs": "Liczba przebiegów symulacji",
     "s1.basis": "Ograniczenie przepustowości", "s1.basis.em": "co limituje sprint",
     "s1.basis.both": "Punkty i liczba elementów", "s1.basis.points": "Tylko punkty", "s1.basis.items": "Tylko liczba elementów",
-    "s1.backfill": "Gdy element się nie mieści",
-    "s1.backfill.yes": "Weź kolejny, który się zmieści", "s1.backfill.no": "Zakończ sprint w tym miejscu",
+    "s1.backfill": "Priorytet a wypełnienie sprintu", "s1.backfill.em": "gdy kolejny element nie mieści się w tym, co zostało",
+    "s1.backfill.yes": "Uzupełnij lukę mniejszym elementem", "s1.backfill.no": "Trzymaj ścisły priorytet, zostaw lukę",
+    "s1.note2": "To drugie ustawienie znaczy więcej, niż się wydaje. Uzupełnianie luki to zachowanie większości zespołów i zgadza się z historią wklejoną powyżej. Ścisły priorytet oznacza, że jeden duży element na górze backlogu blokuje wszystko za sobą — a to daje prognozę wolniejszą, niż wasz zespół kiedykolwiek był.",
     "s1.stat.items": "Elementy / sprint · P50",
     "s1.stat.pts": "Punkty / sprint · P50",
     "s1.stat.p85": "Punkty / sprint przy 85% pewności",
@@ -656,6 +694,14 @@ var STR = {
     "s5.noreq": "Brak zgłoszeń na ten sprint.",
     "s5.today": "zgłoś dziś", "s5.by.date2": "zgłoś do {date}",
     "s5.turn": "czas odpowiedzi {d} dni · odblokowuje sprint {n}",
+    "sprintShort": "S{n}",
+    "s5.held.req": "zgłoszone w sprincie {n}",
+    "s5.hand.title": "Przekazania zależności",
+    "s5.hand.note": "Jeden wiersz na jedną zależność międzyzespołową: sprint, w którym zgłoszenie musi wyjść, czas oczekiwania i sprint, w którym praca może faktycznie ruszyć. Oczekiwanie dłuższe niż timebox zawsze rozkłada się na dwa sprinty — i właśnie to warto powiedzieć wprost na planowaniu.",
+    "s5.hand.none": "Brak zależności międzyzespołowych w zakresie.",
+    "s5.hand.ask": "zgłoś", "s5.hand.wait": "czekanie", "s5.hand.start": "start", "s5.hand.same": "zgłoś · start",
+    "s5.hand.summary": "zgłoś w {a}, start w {b} · {d} dni oczekiwania",
+    "s5.hand.summary1": "zgłoś i start w {a} · {d} dni oczekiwania",
     "s5.miss.title": "Nie zdąży na termin",
     "s5.miss.sub": "Przy {p} pewności te elementy wypadają poza {n} {w}. Usuń je z zakresu albo przesuń w górę backlogu, wypychając coś innego.",
     "s5.miss.dep": "{team} potrzebuje {d} dni — dłużej niż zostało czasu",
@@ -1103,6 +1149,7 @@ function buildPlan(){
       var r = 1 + Math.floor(workingBetween(pl.start, entry.raiseBy) / p.sprintLen);
       if (r < 1) r = 1;
       if (r > ws) r = ws;
+      entry.raiseSprint = r;
       cols[r - 1].raise.push(entry);
     }
     cols[ws - 1].pull.push(entry);
@@ -1374,7 +1421,7 @@ function renderPlan(){
   var sum = $("plan-summary");
   if (!items.length){
     host.innerHTML = '<p class="empty">' + t("s5.empty") + '</p>';
-    lateHost.innerHTML = ""; sum.innerHTML = "";
+    lateHost.innerHTML = ""; sum.innerHTML = ""; $("plan-handoff").innerHTML = "";
     $("plan-hint").textContent = "";
     return;
   }
@@ -1413,8 +1460,9 @@ function renderPlan(){
       html += '<h4 style="margin-top:14px">' + t("s5.lane.held") + '</h4>';
       heldItems.forEach(function(e){
         var it = items[e.i];
-        html += '<div class="pull" style="border-style:dashed"><span class="k">' + esc(it.key || t("nokey")) + '</span>' +
-          '<span class="pts">' + esc(e.team) + ' · ' + (+it.points || 0) + ' ' + t("pt") + '</span></div>';
+        html += '<div class="pull" style="border-style:dashed;flex-wrap:wrap"><span class="k">' + esc(it.key || t("nokey")) + '</span>' +
+          '<span class="pts">' + esc(e.team) + ' · ' + (+it.points || 0) + ' ' + t("pt") + '</span>' +
+          '<span class="pts" style="flex-basis:100%">' + t("s5.held.req", { n: e.raiseSprint || 1 }) + '</span></div>';
       });
     }
     html += '</div>';
@@ -1431,6 +1479,7 @@ function renderPlan(){
     html += '</div></div>';
   });
   host.innerHTML = html;
+  renderHandoff(pn);
 
   var lh = "";
   if (pn.missed.length){
@@ -1448,6 +1497,50 @@ function renderPlan(){
     lh += '</div>';
   }
   lateHost.innerHTML = lh;
+}
+
+
+function renderHandoff(pn){
+  var host = $("plan-handoff");
+  var rows = [];
+  pn.cols.forEach(function(c){
+    c.pull.forEach(function(e){ if (e.team) rows.push(e); });
+  });
+  rows.sort(function(a, b){ return (a.raiseSprint || 1) - (b.raiseSprint || 1) || a.sprint - b.sprint; });
+
+  var html = '<h3 style="margin-bottom:6px">' + t("s5.hand.title") + '</h3>' +
+             '<p class="note" style="font-size:13px;margin-bottom:18px">' + t("s5.hand.note") + '</p>';
+  if (!rows.length){
+    host.innerHTML = '<div class="handoff">' + html + '<p class="empty">' + t("s5.hand.none") + '</p></div>';
+    return;
+  }
+
+  var cols = 'grid-template-columns:repeat(' + pn.K + ',minmax(0,1fr))';
+  html += '<div class="hgrid"><span></span><span class="hcells" style="' + cols + '">';
+  for (var s = 1; s <= pn.K; s++) html += '<span class="hhead">' + t("sprintShort", { n: s }) + '</span>';
+  html += '</span>';
+
+  rows.forEach(function(e){
+    var it = items[e.i];
+    var from = e.raiseSprint || 1, to = e.sprint;
+    html += '<span class="hlabel"><span class="k">' + esc(it.key || t("nokey")) + '</span>' +
+            '<span class="t">' + esc(e.team) + '</span>' +
+            '<span class="hsum">' + (from === to
+              ? t("s5.hand.summary1", { a: t("sprintShort", { n: from }), d: Math.ceil(e.wait) })
+              : t("s5.hand.summary", { a: t("sprintShort", { n: from }), b: t("sprintShort", { n: to }), d: Math.ceil(e.wait) })) +
+            '</span></span>';
+    html += '<span class="hcells" style="' + cols + '">';
+    for (var c2 = 1; c2 <= pn.K; c2++){
+      if (c2 === from && c2 === to) html += '<span class="hcell ask">' + t("s5.hand.same") + '</span>';
+      else if (c2 === from) html += '<span class="hcell ask">' + t("s5.hand.ask") + '</span>';
+      else if (c2 === to) html += '<span class="hcell work">' + t("s5.hand.start") + '</span>';
+      else if (c2 > from && c2 < to) html += '<span class="hcell wait">' + t("s5.hand.wait") + '</span>';
+      else html += '<span class="hcell"></span>';
+    }
+    html += '</span>';
+  });
+  html += '</div>';
+  host.innerHTML = '<div class="handoff">' + html + '</div>';
 }
 
 function stat(v, k){
