@@ -66,7 +66,18 @@ header .sub{color:var(--ink-2);max-width:64ch;margin-top:16px;font-size:15px;fon
 header .rule{width:64px;height:5px;background:var(--signal);border-radius:3px;margin-top:26px}
 
 section{margin-bottom:44px}
-.sechead{display:flex;align-items:center;gap:14px;margin-bottom:20px;flex-wrap:wrap}
+.sechead{display:flex;align-items:center;gap:14px;margin-bottom:20px;flex-wrap:wrap;cursor:pointer;
+  user-select:none;-webkit-user-select:none}
+.sechead .hint{margin-left:auto}
+.sectoggle{border:1px solid var(--rule-2);background:#fff;border-radius:50%;width:30px;height:30px;
+  padding:0;display:inline-flex;align-items:center;justify-content:center;flex:none;color:var(--ink)}
+.sectoggle svg{width:16px;height:16px;transition:transform .18s ease}
+.sechead:hover .sectoggle{background:var(--signal);border-color:var(--ink)}
+section.collapsed .sectoggle svg{transform:rotate(-90deg)}
+section.collapsed .sechead{margin-bottom:0}
+section.collapsed{margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--rule)}
+section.collapsed .secbody{display:none}
+@media (prefers-reduced-motion:reduce){ .sectoggle svg{transition:none} }
 .sechead h2{display:flex;align-items:center;gap:13px}
 .num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;
   border-radius:50%;background:var(--signal);color:var(--ink);font-size:13px;font-weight:600;flex:none;letter-spacing:0}
@@ -241,9 +252,12 @@ details[open] summary::before{content:"– "}
       </svg>
       <span data-i18n="brand">Lean Agile Ninja</span>
     </div>
+    <div style="display:flex;align-items:center;gap:10px;margin-left:auto">
+    <button type="button" id="btn-collapse" class="ghost" style="padding:5px 14px;font-size:12px"></button>
     <div class="langswitch" role="group" aria-label="Language">
       <button type="button" data-lang="en" aria-pressed="true">EN</button>
       <button type="button" data-lang="pl" aria-pressed="false">PL</button>
+    </div>
     </div>
   </div>
   <p class="eyebrow" data-i18n="hdr.eyebrow">Flow forecasting</p>
@@ -614,6 +628,8 @@ var STR = {
     "s7.p2": "The first time an item is picked up, the model rolls its dependency. An item labelled against a team waits on that team. An unlabelled item turns out to have a dependency with probability equal to your discovery rate, and the team it lands on is drawn in proportion to how often each team already appears in the labelled backlog. The wait itself is drawn from an exponential distribution fitted so its 85th percentile matches the figure you entered — mean = P85 ÷ 1.897 — which puts most waits well under the P85 and a long tail above it. The wait is assumed to start at a random point in the sprint, so a wait shorter than a sprint sometimes still lands inside it and sometimes tips over the edge — a team with a P85 of six days costs you far less than one with eighteen. Anything that tips over frees its capacity for whatever is next in the backlog.",
     "s7.p3": "The figure at the foot of each column is <span class=\"mono\">unlabelled points × discovery rate × (expected wait ÷ sprint length)</span>, where the expected wait is the weighted mean across the teams. It is a diagnostic showing how much of that column rests on dependencies nobody has spotted — the simulation has already accounted for it, so do not subtract it from capacity a second time.",
 
+    "ui.toggle": "Show or hide this section",
+    "ui.collapseAll": "Collapse all", "ui.expandAll": "Expand all",
     "foot": "Runs entirely in your browser. Nothing is uploaded anywhere.",
     "msg.import": "Imported <strong>{n}</strong> {w}{extra} from {name}.",
     "msg.import.extra": " and {n} {w} of history",
@@ -764,6 +780,8 @@ var STR = {
     "s7.p2": "Przy pierwszym podjęciu elementu model losuje jego zależność. Element oznaczony zespołem czeka na ten zespół. Element nieoznaczony okazuje się zależny z prawdopodobieństwem równym odsetkowi późnych wykryć, a zespół losowany jest proporcjonalnie do tego, jak często występuje już w oznaczonym backlogu. Samo oczekiwanie losowane jest z rozkładu wykładniczego dopasowanego tak, by jego 85. percentyl odpowiadał wprowadzonej wartości — średnia = P85 ÷ 1,897 — co daje większość oczekiwań poniżej P85 i długi ogon powyżej. Zakładamy, że oczekiwanie zaczyna się w losowym momencie sprintu, więc oczekiwanie krótsze niż sprint czasem jeszcze się w nim mieści, a czasem przelewa poza jego koniec — zespół z P85 równym sześć dni kosztuje znacznie mniej niż taki z osiemnastoma. To, co się przeleje, zwalnia przepustowość dla kolejnego elementu backlogu.",
     "s7.p3": "Liczba u dołu każdej kolumny to <span class=\"mono\">punkty nieoznaczone × odsetek wykryć × (oczekiwane oczekiwanie ÷ długość sprintu)</span>, gdzie oczekiwane oczekiwanie to średnia ważona po zespołach. To wskaźnik diagnostyczny pokazujący, jak duża część kolumny opiera się na niezauważonych zależnościach — symulacja już to uwzględniła, więc nie odejmuj tego od przepustowości po raz drugi.",
 
+    "ui.toggle": "Pokaż lub ukryj tę sekcję",
+    "ui.collapseAll": "Zwiń wszystko", "ui.expandAll": "Rozwiń wszystko",
     "foot": "Działa w całości w przeglądarce. Nic nie jest nigdzie wysyłane.",
     "msg.import": "Zaimportowano <strong>{n}</strong> {w}{extra} z {name}.",
     "msg.import.extra": " oraz {n} {w} historii",
@@ -839,6 +857,7 @@ function applyLang(){
   for (var k = 0; k < btns.length; k++){
     btns[k].setAttribute("aria-pressed", btns[k].getAttribute("data-lang") === LANG ? "true" : "false");
   }
+  if (typeof syncToggleLabels === "function") syncToggleLabels();
 }
 
 function setLang(code){
@@ -1903,7 +1922,74 @@ $("btn-demo").addEventListener("click", function(){
   $("import-msg").innerHTML = "";
 });
 
+
+/* ---------- collapsible sections ---------- */
+
+var CHEVRON = '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 8l5 5 5-5" fill="none" ' +
+              'stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+function makeCollapsible(){
+  var secs = document.querySelectorAll("section");
+  for (var i = 0; i < secs.length; i++){
+    var sec = secs[i];
+    var head = sec.querySelector(".sechead");
+    if (!head || sec.querySelector(".secbody")) continue;
+
+    /* move everything after the header into a wrapper we can hide.
+       nodes are moved, not recreated, so every id the renderers use survives. */
+    var body = document.createElement("div");
+    body.className = "secbody";
+    body.id = "secbody-" + i;
+    while (head.nextSibling) body.appendChild(head.nextSibling);
+    sec.appendChild(body);
+
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "sectoggle";
+    btn.setAttribute("aria-expanded", "true");
+    btn.setAttribute("aria-controls", body.id);
+    btn.innerHTML = CHEVRON;
+    head.appendChild(btn);
+
+    head.addEventListener("click", function(){ toggleSection(this.parentNode); });
+  }
+  syncToggleLabels();
+}
+
+function toggleSection(sec, force){
+  var collapse = (force === undefined) ? !sec.classList.contains("collapsed") : force;
+  if (collapse) sec.classList.add("collapsed"); else sec.classList.remove("collapsed");
+  var btn = sec.querySelector(".sectoggle");
+  if (btn) btn.setAttribute("aria-expanded", collapse ? "false" : "true");
+  syncToggleLabels();
+}
+
+function syncToggleLabels(){
+  var btns = document.querySelectorAll(".sectoggle");
+  for (var i = 0; i < btns.length; i++) btns[i].setAttribute("aria-label", t("ui.toggle"));
+  var all = document.querySelectorAll("section");
+  var anyOpen = false;
+  for (var j = 0; j < all.length; j++){
+    if (all[j].querySelector(".secbody") && !all[j].classList.contains("collapsed")) anyOpen = true;
+  }
+  var master = $("btn-collapse");
+  if (master){
+    master.textContent = anyOpen ? t("ui.collapseAll") : t("ui.expandAll");
+    master.setAttribute("data-state", anyOpen ? "open" : "closed");
+  }
+}
+
+$("btn-collapse").addEventListener("click", function(){
+  var collapse = this.getAttribute("data-state") !== "closed";
+  var all = document.querySelectorAll("section");
+  for (var i = 0; i < all.length; i++){
+    if (all[i].querySelector(".secbody")) toggleSection(all[i], collapse);
+  }
+  if (collapse) window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
 /* ---------- start ---------- */
+makeCollapsible();
 applyLang();
 (function seedDates(){
   var d = todayMidnight();
